@@ -37,6 +37,7 @@ package Framework
 				if(members[i] == null)
 				{
 					members[i] = o;
+					addChild(o);
 					if(i >= length)
 						length = i + 1;
 					return o;
@@ -59,6 +60,7 @@ package Framework
 				members.length *= 2;
 			}
 
+			addChild(o);
 			members[i] = o;
 			length = i + 1;
 			return o;
@@ -86,12 +88,12 @@ package Framework
 			return o;
 		}
 
-		public function Update():void
+		override public function Update():void
 		{
 			for each(var o:FObject in members)
 			{
 				if(o != null && o.thinks && o.exists)
-					o.Think();
+					o.Update();
 			}
 		}
 

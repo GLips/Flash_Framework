@@ -47,11 +47,8 @@ package Framework
 			FG.UpdateTime();
 			FG.mouse.Update();
 
-			// Update objects in the scene
+			// Update objects in the scene & do game logic
 			scene.Update();
-
-			// Perform scene logic
-			scene.Think();
 
 			// Update and draw game objects
 			scene.Draw();

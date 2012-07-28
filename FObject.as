@@ -10,8 +10,10 @@ package Framework
 
 		public var exists:Boolean;	// False
 
-		public function FObject()
+		public function FObject(X:int = 0, Y:int = 0)
 		{
+			x = X;
+			y = Y;
 			super();
 			Create();
 		}
@@ -26,7 +28,7 @@ package Framework
 			// Called on object removal from the scene
 		}
 
-		public function Think():void
+		public function Update():void
 		{
 			// Called every frame if thinks == true;
 		}
