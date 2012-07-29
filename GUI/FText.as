@@ -1,7 +1,9 @@
 package Framework.GUI
 {
 	import flash.text.TextField;
+	import flash.text.TextFormat;
 	import flash.text.TextFieldType;
+	import flash.text.TextFieldAutoSize;
 
 	import Framework.FObject;
 
@@ -10,6 +12,9 @@ package Framework.GUI
 
 		public var label:String;
 		private var field:TextField;
+		public var tFormat:TextFormat;
+
+		public var size:int = 14;
 
 		/*[Embed(systemFont="Arial", 
 			fontName = "arial", 
@@ -28,17 +33,23 @@ package Framework.GUI
 			super(X, Y);
 			label = Label;
 
+			tFormat = new TextFormat();
+			tFormat.size = size;
+
 			field = new TextField();
+			field.defaultTextFormat = tFormat;
 			field.text = label;
-			field.type = TextFieldType.DYNAMIC;
+			field.type = TextFieldType.INPUT;
 			field.border = false;
 			field.x = 0;
 			field.y = 0;
-			field.multiline = true;
-			field.wordWrap = true;
+			field.autoSize = TextFieldAutoSize.LEFT;
+			field.multiline = false;
+			field.wordWrap = false;
 			addChild(field);
 
-			trace("New FText instantiated.");
+			width = field.width;
+			height = field.height;
 		}
 	}
 

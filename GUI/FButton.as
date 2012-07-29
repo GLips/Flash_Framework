@@ -13,6 +13,18 @@ package Framework.GUI
 			super(X, Y)
 			label = new FText(0, 0, Label);
 			addChild(label);
+			trace("Width: " + width);
+			trace("Height: " + height);
+		}
+
+		override public function Update():void
+		{
+			/*
+			if(FG.mouse.justPressed() && FG.pointInRect(FG.mouse, this))
+			{
+				onDown();
+			}
+			*/
 		}
 	}
 
