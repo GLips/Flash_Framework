@@ -60,8 +60,9 @@ package Framework.Input
 			wheel = e.delta;
 		}
 
-		public function justPressed():Boolean { return (_current == 2); }
-		public function justReleased():Boolean { return (_current == -1); }
-		public function pressed():Boolean { return (_current > 0); }
+		public function isDown():Boolean { return _current == 1; }
+		public function justPressed():Boolean { return _current == 2; }
+		public function justReleased():Boolean { return _current == -1; }
+		public function pressed():Boolean { return _current > 0; }
 	}
 }

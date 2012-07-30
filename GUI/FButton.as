@@ -15,11 +15,23 @@ package Framework.GUI
 		public var onOver:Function;
 		public var onDown:Function;
 
+		// State tracking
+		private var lastState:int;
+		private var state:int;
+		private const DOWN:int 		= 1;
+		private const OVER:int 		= 2;
+		private const NORMAL:int	= 3;
+
+		// Over function trigger
+		private var triggered:Boolean;
+
 		public function FButton(X:int = 0, Y:int = 0, Label:String = null, OnUp:Function = null)
 		{
 			super(X, Y)
 
 			thinks = true;
+
+			state = NORMAL;
 
 			onUp = OnUp;
 
@@ -32,13 +44,42 @@ package Framework.GUI
 			// Make sure we're in the button's hitbox
 			var inBox:Boolean = FCollide.PointInRect(FG.mouse, new FRect(x, y, width, height));
 
-			if(FG.mouse.justPressed() && inBox && onDown != null)
+			if(inBox)
 			{
-				onDown();
+				if(FG.mouse.isDown())
+				{
+					state = DOWN;
+				}
+				else
+				{
+					state = OVER;
+				}
+				
+				// Make sure we only trigger the roll over func once per roll
+				if(!triggered && onOver != null)
+				{
+					triggered = true;
+					onOver();
+				}
+
+				if(FG.mouse.justPressed() && onDown != null)
+				{
+					onDown();
+				}
+				else if(FG.mouse.justReleased() && onUp != null)
+				{
+					onUp();
+				}
 			}
-			else if(FG.mouse.justReleased() && inBox && onUp != null)
+			else
 			{
-				onUp();
+				state = NORMAL;
+
+				// Reset the over trigger
+				if(triggered)
+				{
+					triggered = false;
+				}
 			}
 		}
 	}
