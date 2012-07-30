@@ -19,7 +19,7 @@ package Framework.Input
 
 		public function FMouse()
 		{
-			// 
+			// Not much to do here
 		}
 
 		public function Update():void
@@ -61,6 +61,7 @@ package Framework.Input
 		}
 
 		public function isDown():Boolean { return _current == 1; }
+		public function isUp():Boolean { return _current == 0; }
 		public function justPressed():Boolean { return _current == 2; }
 		public function justReleased():Boolean { return _current == -1; }
 		public function pressed():Boolean { return _current > 0; }

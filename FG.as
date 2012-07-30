@@ -57,6 +57,11 @@ package Framework
 			FG.lastTime = curTime;
 		}
 
+		public static function SwitchState():void
+		{
+			
+		}
+
 		public static function get framerate():Number
 		{
 			return 1000/FG.dt;
