@@ -1,4 +1,4 @@
-package Framework
+package Framework.Shapes
 {
 	public class FPoint
 	{

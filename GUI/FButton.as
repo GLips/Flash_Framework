@@ -2,6 +2,9 @@ package Framework.GUI
 {
 	import Framework.GUI.FText;
 	import Framework.FSprite;
+	import Framework.FG;
+	import Framework.Util.FCollide;
+	import Framework.Shapes.FRect;
 
 	public class FButton extends FSprite
 	{
@@ -24,12 +27,18 @@ package Framework.GUI
 
 		override public function Update():void
 		{
-			if(FG.mouse.justPressed() && FCollide.pointInRect(FG.mouse, this) && onDown != null)
+			if(FG.mouse.justPressed())
 			{
+				trace("just pressed");
+			}
+			if(FG.mouse.justPressed() && FCollide.PointInRect(FG.mouse, new FRect(x, y, width, height)) && onDown != null)
+			{
+				trace("onDown");
 				onDown();
 			}
-			else if(FG.mouse.justReleased() && onUp != null)
+			else if(FG.mouse.justReleased() && FCollide.PointInRect(FG.mouse, new FRect(x, y, width, height)) && onUp != null)
 			{
+				trace("onUp");
 				onUp();
 			}
 		}

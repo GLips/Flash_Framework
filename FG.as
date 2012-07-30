@@ -23,11 +23,11 @@ package Framework
 		// Input
 		public static var mouse:FMouse;
 
-		// The Game (you lost it)
+		// The game object, used to get references to the stage
 		public static var _game:FGame;
 
 		// Scenes
-		public static var _scene:FScene;	// The current scene
+		//public static var _scene:FScene;	// The current scene
 		public static var _newScene:FScene;	// 
 
 		public function FG():void
@@ -36,12 +36,12 @@ package Framework
 			trace("Don't instantiate the Global Framework class.");
 		}
 
-		public static function Init(g:FGame, w:int, h:int, s:FScene):void
+		public static function Init(g:FGame, w:int, h:int):void
 		{
 			_game = g;
 			FG.width = w;
 			FG.height = h;
-			FG._scene = s;
+			//FG._scene = s;
 
 			FG.firstTime = getTimer();
 			FG.lastTime = firstTime;

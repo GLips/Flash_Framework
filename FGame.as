@@ -13,15 +13,13 @@ package Framework
 		// Scene
 		protected var scene:FScene;
 
-		public function FGame(g:FGame, w:int, h:int, s:FScene):void
+		public function FGame(g:FGame, w:int, h:int, s:Class):void
 		{
-			FG.Init(g, w, h, s);
+			FG.Init(g, w, h);
 
-			scene = s;
+			scene = new s();
 
 			addChild(scene);
-
-			scene.Add(new FObject());
 
 			// Once we have a reference to Flash we can do our thing
 			addEventListener(Event.ENTER_FRAME, Create);
