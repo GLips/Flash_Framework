@@ -7,6 +7,7 @@ package Framework
 
 		public var thinks:Boolean;	// False
 		public var draws:Boolean = true;	// False
+		protected var paused:Boolean;		// False
 
 		public var exists:Boolean;	// False
 
@@ -16,6 +17,7 @@ package Framework
 			y = Y;
 			super();
 			Create();
+			exists = true;
 		}
 
 		private function Create():void

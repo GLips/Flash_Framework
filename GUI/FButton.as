@@ -3,7 +3,7 @@ package Framework.GUI
 	import Framework.GUI.FText;
 	import Framework.FSprite;
 	import Framework.FG;
-	import Framework.Util.FCollide;
+	import Framework.Utils.FCollide;
 	import Framework.Shapes.FRect;
 
 	public class FButton extends FSprite
@@ -19,6 +19,8 @@ package Framework.GUI
 		{
 			super(X, Y)
 
+			thinks = true;
+
 			onUp = OnUp;
 
 			label = new FText(0, 0, Label);
@@ -27,18 +29,15 @@ package Framework.GUI
 
 		override public function Update():void
 		{
-			if(FG.mouse.justPressed())
+			// Make sure we're in the button's hitbox
+			var inBox:Boolean = FCollide.PointInRect(FG.mouse, new FRect(x, y, width, height));
+
+			if(FG.mouse.justPressed() && inBox && onDown != null)
 			{
-				trace("just pressed");
-			}
-			if(FG.mouse.justPressed() && FCollide.PointInRect(FG.mouse, new FRect(x, y, width, height)) && onDown != null)
-			{
-				trace("onDown");
 				onDown();
 			}
-			else if(FG.mouse.justReleased() && FCollide.PointInRect(FG.mouse, new FRect(x, y, width, height)) && onUp != null)
+			else if(FG.mouse.justReleased() && inBox && onUp != null)
 			{
-				trace("onUp");
 				onUp();
 			}
 		}

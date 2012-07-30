@@ -1,4 +1,4 @@
-package Framework.Util
+package Framework.Utils
 {
 
 	import Framework.Shapes.*;

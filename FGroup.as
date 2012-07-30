@@ -6,8 +6,6 @@ package Framework
 		public var members:Array;
 		public var length:int;
 
-		private var paused:Boolean;
-
 		protected var _maxSize:uint;
 
 		public function FGroup(maxSize:uint = 0)
