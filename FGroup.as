@@ -48,7 +48,7 @@ package Framework
 				i++;
 			}
 
-			// If there's no null spot, make room and 
+			// If there's no null spot, make room and add our object
 			if(_maxSize > 0)
 			{
 				if(members.length >= _maxSize)

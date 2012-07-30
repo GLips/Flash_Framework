@@ -24,12 +24,14 @@ package Framework.GUI
 
 		override public function Update():void
 		{
-			/*
-			if(FG.mouse.justPressed() && FG.pointInRect(FG.mouse, this))
+			if(FG.mouse.justPressed() && FCollide.pointInRect(FG.mouse, this) && onDown != null)
 			{
 				onDown();
 			}
-			*/
+			else if(FG.mouse.justReleased() && onUp != null)
+			{
+				onUp();
+			}
 		}
 	}
 

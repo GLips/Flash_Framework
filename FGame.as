@@ -54,7 +54,7 @@ package Framework
 			scene.Draw();
 		}
 
-		// Pass the event to the global mouse object
+		// Pass events mouse object
 		protected function onMouseDown(e:MouseEvent):void { FG.mouse.onDown(e); }
 		protected function onMouseUp(e:MouseEvent):void { FG.mouse.onUp(e); }
 		protected function onMouseWheel(e:MouseEvent):void { FG.mouse.onWheel(e); }
