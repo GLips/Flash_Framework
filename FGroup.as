@@ -6,6 +6,8 @@ package Framework
 		public var members:Array;
 		public var length:int;
 
+		private var paused:Boolean;
+
 		protected var _maxSize:uint;
 
 		public function FGroup(maxSize:uint = 0)
@@ -13,6 +15,7 @@ package Framework
 			super();
 
 			thinks = true;
+			paused = false;
 
 			members = new Array();
 			_maxSize = maxSize;
@@ -90,10 +93,13 @@ package Framework
 
 		override public function Update():void
 		{
-			for each(var o:FObject in members)
+			if(!paused && thinks)
 			{
-				if(o != null && o.thinks && o.exists)
-					o.Update();
+				for each(var o:FObject in members)
+				{
+					if(o != null && o.thinks && o.exists)
+						o.Update();
+				}
 			}
 		}
 
@@ -105,6 +111,10 @@ package Framework
 					o.Draw();
 			}
 		}
+
+		public function Pause():void { paused = true; }
+		public function Unpause():void { paused = false; }
+		public function TogglePause():void { paused = !paused; }
 
 	}
 }

@@ -38,9 +38,9 @@ package Framework.GUI
 
 			field = new TextField();
 			field.defaultTextFormat = tFormat;
+			field.selectable = false;
 			field.text = label;
-			field.type = TextFieldType.INPUT;
-			field.border = false;
+			//field.border = false;		// Redundant
 			field.x = 0;
 			field.y = 0;
 			field.autoSize = TextFieldAutoSize.LEFT;
@@ -50,6 +50,18 @@ package Framework.GUI
 
 			width = field.width;
 			height = field.height;
+		}
+
+		public function UpdateText(s:String):void
+		{
+			label = s;
+			field.text = s;
+		}
+
+		public function UpdateFormat():void
+		{
+			field.defaultTextFormat = tFormat;
+			field.text = field.text;
 		}
 	}
 

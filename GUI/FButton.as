@@ -8,13 +8,18 @@ package Framework.GUI
 
 		private var label:FText;
 
-		public function FButton(X:int = 0, Y:int = 0, Label:String = null, OnClick:Function = null)
+		public var onUp:Function;
+		public var onOver:Function;
+		public var onDown:Function;
+
+		public function FButton(X:int = 0, Y:int = 0, Label:String = null, OnUp:Function = null)
 		{
 			super(X, Y)
+
+			onUp = OnUp;
+
 			label = new FText(0, 0, Label);
 			addChild(label);
-			trace("Width: " + width);
-			trace("Height: " + height);
 		}
 
 		override public function Update():void
