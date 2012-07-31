@@ -75,6 +75,9 @@ package Framework
 			if(i < 0 || i >= members.length)
 				return null;
 
+			// Remove the sprite from being displayed in the group
+			removeChild(o);
+
 			// Either splice it (expensive) or just set obj to null
 			if(Splice)
 			{
@@ -87,6 +90,20 @@ package Framework
 			}
 
 			return o;
+		}
+
+		override public function Destroy():void
+		{
+			for(var i:int = members.length - 1; i >= 0; i--)
+			{
+				if(members[i] != null)
+				{
+					if(members[i] is FGroup)
+						members[i].Remove();
+
+					members[i].Destroy();
+				}
+			}
 		}
 
 		override public function Update():void

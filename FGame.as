@@ -12,12 +12,16 @@ package Framework
 
 		// Scene
 		protected var scene:FScene;
+		public var _requestedScene:FScene
 
 		public function FGame(g:FGame, w:int, h:int, s:Class):void
 		{
 			FG.Init(g, w, h);
 
 			scene = new s();
+			_requestedScene = scene;
+
+			FG.InitScene(scene);
 
 			addChild(scene);
 
@@ -45,11 +49,23 @@ package Framework
 			FG.UpdateTime();
 			FG.mouse.Update();
 
+			if(scene != _requestedScene)
+				SwitchScene();
+
 			// Update objects in the scene & do game logic
 			scene.Update();
 
 			// Update and draw game objects
 			scene.Draw();
+		}
+
+		protected function SwitchScene():void
+		{
+			scene.Destroy();
+			removeChild(scene);
+			scene = _requestedScene;
+			addChild(scene);
+			scene.Create();
 		}
 
 		// Pass events mouse object

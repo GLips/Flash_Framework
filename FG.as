@@ -27,8 +27,8 @@ package Framework
 		public static var _game:FGame;
 
 		// Scenes
-		//public static var _scene:FScene;	// The current scene
-		public static var _newScene:FScene;	// 
+		public static var _scene:FScene;	// The current scene
+		public static var _newScene:FScene;	// The scene to switch to
 
 		public function FG():void
 		{
@@ -57,9 +57,14 @@ package Framework
 			FG.lastTime = curTime;
 		}
 
-		public static function SwitchState():void
+		public static function InitScene(s:FScene):void
 		{
-			
+			_scene = s;
+		}
+
+		public static function SwitchScene(s:FScene):void
+		{
+			_game._requestedScene = s;
 		}
 
 		public static function get framerate():Number

@@ -20,12 +20,12 @@ package Framework
 			exists = true;
 		}
 
-		private function Create():void
+		public function Create():void
 		{
 			// Called on creation automatically
 		}
 
-		private function Destroy():void
+		public function Destroy():void
 		{
 			// Called on object removal from the scene
 		}
