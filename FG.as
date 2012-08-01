@@ -62,7 +62,7 @@ package Framework
 			_scene = s;
 		}
 
-		public static function SwitchScene(s:FScene):void
+		public static function SwitchScene(s:FScene, transition:int = 0):void
 		{
 			_game._requestedScene = s;
 		}
