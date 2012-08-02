@@ -7,6 +7,7 @@ package Framework
 	import flash.utils.getTimer;
 
 	import Framework.Input.*;
+	import Framework.Maths.FMath;
 
 	public class FG
 	{
@@ -70,7 +71,7 @@ package Framework
 
 		public static function get framerate():Number
 		{
-			return 1000/FG.dt;
+			return FMath.round(1000/FG.dt, 2);
 		}
 
 		public static function get stage():Stage

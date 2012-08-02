@@ -25,6 +25,7 @@ package Framework.GUI
 		// Drawing style
 		public var _bgColor:Number;
 		public function get bgColor():Number { return _bgColor; }
+		// Automatically redraw when background color is changed
 		public function set bgColor(x:Number):void { _bgColor = x; draws = true; }
 
 		// Over function trigger

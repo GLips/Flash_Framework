@@ -7,14 +7,14 @@ package Framework.Maths
 			trace("Don't instantiate Framework.Maths.FMath.");
 		}
 
-		public static function RadiansToDegrees(x:Number):Number
-		{
-			return x / 0.0174533;
-		}
+		public static function RadiansToDegrees(x:Number):Number { return x / 0.0174533; }
+		public static function DegreesToRadians(x:Number):Number { return x / 57.2958; }
 
-		public static function DegreesToRadians(x:Number):Number
+		// Round a number to a number of decimal places
+		public static function round(x:Number, precision:int = 0):Number
 		{
-			return x / 57.2958;
+			precision = 10^precision;
+			return Math.round(x * precision)/precision;
 		}
 	}
 }
