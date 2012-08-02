@@ -10,13 +10,12 @@ package Framework
 
 		public function FGroup(maxSize:uint = 0)
 		{
-			super();
-
-			thinks = true;
 			paused = false;
 
 			members = new Array();
 			_maxSize = maxSize;
+
+			super();
 		}
 
 		/*
@@ -26,6 +25,7 @@ package Framework
 		*/
 		public function Add(o:FObject):FObject
 		{
+
 			// Don't need to add the same object twice
 			if(members.indexOf(o) >= 0)
 				return o;

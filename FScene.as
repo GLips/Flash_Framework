@@ -6,7 +6,6 @@ package Framework
 		public function FScene()
 		{
 			super();
-			thinks = true;
 		}
 
 	}

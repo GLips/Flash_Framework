@@ -5,11 +5,11 @@ package Framework
 	public class FObject extends Sprite
 	{
 
-		public var thinks:Boolean;	// False
+		public var thinks:Boolean;	// Set to true
 		public var draws:Boolean = true;	// False
 		protected var paused:Boolean;		// False
 
-		public var exists:Boolean;	// False
+		public var exists:Boolean;	// Set to true
 
 		public function FObject(X:int = 0, Y:int = 0)
 		{
@@ -18,6 +18,7 @@ package Framework
 			super();
 			Create();
 			exists = true;
+			thinks = true;
 		}
 
 		public function Create():void
