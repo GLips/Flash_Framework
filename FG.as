@@ -36,6 +36,7 @@ package Framework
 			trace("Don't instantiate the Global Framework class.");
 		}
 
+		// Set up vars necessary for FG to track
 		public static function Init(g:FGame, w:int, h:int):void
 		{
 			_game = g;

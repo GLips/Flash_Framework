@@ -26,27 +26,24 @@ package Framework.GUI
 		private var defaultFont:Class;*/
 
 		// If set, overrides use of defaultFont
-		public var font:Class;
+		//public var font:Class;
 
-		public function FText(X:int = 0, Y:int = 0, Label:String = null)
+		// Default color == BLACK
+		public var textColor:Number;
+
+		// Tracks if text is on stage already
+		private var staged:Boolean;
+
+		public function FText(X:int = 0, Y:int = 0, Label:String = "")
 		{
-			super(X, Y);
 			label = Label;
+			textColor = 0x000000;
+			super(X, Y);
+		}
 
-			tFormat = new TextFormat();
-			tFormat.size = size;
-
-			field = new TextField();
-			field.defaultTextFormat = tFormat;
-			field.selectable = false;
-			field.text = label;
-			//field.border = false;		// Redundant
-			field.x = 0;
-			field.y = 0;
-			field.autoSize = TextFieldAutoSize.LEFT;
-			field.multiline = false;
-			field.wordWrap = false;
-			addChild(field);
+		override public function Create():void
+		{
+			UpdateFormat();
 
 			width = field.width;
 			height = field.height;
@@ -60,6 +57,30 @@ package Framework.GUI
 
 		public function UpdateFormat():void
 		{
+			tFormat = new TextFormat();
+			tFormat.size = size;
+
+			if(staged)
+			{
+				removeChild(field);
+				staged = false;
+			}
+
+			field = new TextField();
+			field.defaultTextFormat = tFormat;
+			field.selectable = false;
+			field.text = label;
+			field.textColor = textColor;
+			//field.border = false;		// Redundant
+			field.x = 0;
+			field.y = 0;
+			field.autoSize = TextFieldAutoSize.LEFT;
+			field.multiline = false;
+			field.wordWrap = false;
+
+			addChild(field);
+			staged = true;
+
 			field.defaultTextFormat = tFormat;
 			field.text = field.text;
 		}

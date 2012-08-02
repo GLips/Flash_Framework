@@ -51,13 +51,14 @@ package Framework
 			FG.UpdateTime();
 			FG.mouse.Update();
 
+			// Switch scene
 			if(scene != _requestedScene)
 				SwitchScene();
 
-			// Update objects in the scene & do game logic
+			// Do game logic
 			scene.Update();
 
-			// Draw updated game objects
+			// Draw all game objects
 			scene.Draw();
 		}
 
