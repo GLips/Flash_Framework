@@ -10,8 +10,6 @@ package Framework
 
 		public function FGroup(maxSize:uint = 0)
 		{
-			paused = false;
-
 			members = new Array();
 			_maxSize = maxSize;
 
@@ -92,16 +90,14 @@ package Framework
 			return o;
 		}
 
+
 		override public function Destroy():void
 		{
 			for(var i:int = members.length - 1; i >= 0; i--)
 			{
 				if(members[i] != null)
 				{
-					if(members[i] is FGroup)
-						members[i].Remove();
-
-					members[i].Destroy();
+					Remove(members[i]).Destroy();
 				}
 			}
 		}

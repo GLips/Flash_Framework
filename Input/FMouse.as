@@ -2,7 +2,7 @@ package Framework.Input
 {
 	import flash.events.MouseEvent;
 
-	import Framework.Shapes.FPoint;
+	import Framework.Maths.FPoint;
 	import Framework.FG;
 
 	public class FMouse extends FPoint

@@ -40,9 +40,11 @@ package Framework
 			//stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			//stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 
+			// Think/draw hook
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 
+		// The top level game loop
 		protected function onEnterFrame(e:Event):void
 		{
 			// Update the time elapsed since the last frame
@@ -55,17 +57,18 @@ package Framework
 			// Update objects in the scene & do game logic
 			scene.Update();
 
-			// Update and draw game objects
+			// Draw updated game objects
 			scene.Draw();
 		}
 
+		// Change active scene being run in the game loop
 		protected function SwitchScene():void
 		{
 			scene.Destroy();
 			removeChild(scene);
 			scene = _requestedScene;
 			addChild(scene);
-			scene.Create();
+			//scene.Create();
 		}
 
 		// Pass events mouse object

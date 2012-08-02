@@ -1,4 +1,4 @@
-package Framework.Shapes
+package Framework.Maths
 {
 	public class FPoint
 	{
@@ -12,6 +12,11 @@ package Framework.Shapes
 		{
 			x = X;
 			y = Y;
+		}
+
+		public function Dot(p:FPoint):Number
+		{
+			return x * p.x + y * p.y;
 		}
 	}
 }
