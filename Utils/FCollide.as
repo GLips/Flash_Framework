@@ -2,6 +2,7 @@ package Framework.Utils
 {
 
 	import Framework.Shapes.*;
+	import Framework.Maths.FPoint;
 
 	public class FCollide
 	{

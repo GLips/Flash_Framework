@@ -1,5 +1,8 @@
 package Framework.Shapes
 {
+
+	import Framework.Maths.FPoint;
+
 	public class FShape
 	{
 

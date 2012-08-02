@@ -1,10 +1,10 @@
-package Framework.Utils
+package Framework.Maths
 {
 	public class FMath
 	{
 		public function FMath():void
 		{
-			trace("Don't instantiate FMath.");
+			trace("Don't instantiate Framework.Maths.FMath.");
 		}
 
 		public static function RadiansToDegrees(x:Number):Number
