@@ -28,6 +28,12 @@ package Framework.GUI
 		// If set, overrides use of defaultFont
 		//public var font:Class;
 
+		// Alignment stuff
+		public static const ALIGN_LEFT:String = TextFieldAutoSize.LEFT;
+		public static const ALIGN_RIGHT:String = TextFieldAutoSize.RIGHT;
+		public static const ALIGN_CENTER:String = TextFieldAutoSize.CENTER;
+		public var textAlign:String;
+
 		// Default color == BLACK
 		public var textColor:Number;
 
@@ -43,6 +49,8 @@ package Framework.GUI
 
 		override public function Create():void
 		{
+			textAlign = FText.ALIGN_LEFT;
+		
 			UpdateFormat();
 
 			width = field.width;
@@ -72,17 +80,23 @@ package Framework.GUI
 			field.text = label;
 			field.textColor = textColor;
 			//field.border = false;		// Redundant
-			field.x = 0;
-			field.y = 0;
-			field.autoSize = TextFieldAutoSize.LEFT;
+			field.autoSize = textAlign;
 			field.multiline = false;
 			field.wordWrap = false;
 
 			addChild(field);
 			staged = true;
 
-			field.defaultTextFormat = tFormat;
-			field.text = field.text;
+			if(textAlign != FText.ALIGN_CENTER)
+			{
+				field.x = 0;
+				field.y = 0;
+			}
+			else
+			{
+				field.x = -field.width/2;
+				field.y = -field.height/2;
+			}
 		}
 	}
 

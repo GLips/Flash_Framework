@@ -2,8 +2,13 @@ package Framework.GUI.Buttons
 {
 
 	import Framework.FG;
+	
+	import Framework.GUI.FGUI;
 	import Framework.GUI.FButton;
+	import Framework.GUI.FText;
+
 	import Framework.Utils.FCollide;
+	
 	import Framework.Shapes.FCircle;
 	
 	public class FCircleButton extends FButton
@@ -24,17 +29,19 @@ package Framework.GUI.Buttons
 			super.Create();
 
 			label.textColor = 0xFFFFFF;
+			label.textAlign = FText.ALIGN_CENTER;
 			label.UpdateFormat();
 
 			radius = label.width/1.33;
 
-			offsetX = label.width/2;
-			offsetY = label.height/2;
+			//offsetX = label.width/2;
+			//offsetY = label.height/2;
 		}
 
 		override protected function doHitTest():Boolean
 		{
-			return FCollide.PointInCircle(FG.mouse, new FCircle(x + offsetX, y + offsetY, radius))
+			//return FCollide.PointInCircle(FG.mouse, new FCircle(x + offsetX, y + offsetY, radius));
+			return FCollide.PointInCircle(FG.mouse, new FCircle(x, y, radius));
 		}
 
 		override public function Draw():void
@@ -42,9 +49,24 @@ package Framework.GUI.Buttons
 			// Handles setting the default style
 			super.Draw();
 
-			graphics.drawCircle(offsetX, offsetY, radius);
+			graphics.drawCircle(0, 0, radius);
+			graphics.endFill();
+			graphics.beginFill(0);
+			graphics.drawCircle(0,0,1);
 			graphics.endFill();
 			draws = false;
+		}
+
+		override public function CenterX(offset:int = 0):FGUI
+		{
+			x = FG.width/2 + offset;
+			return this;
+		}
+
+		override public function CenterY(offset:int = 0):FGUI
+		{
+			y = FG.height/2 + offset;
+			return this;
 		}
 	}
 }

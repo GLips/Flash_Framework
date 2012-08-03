@@ -6,7 +6,7 @@ package Framework.GUI
 	import Framework.Utils.FCollide;
 	import Framework.Shapes.FRect;
 
-	public class FButton extends FSprite
+	public class FButton extends FGUI
 	{
 
 		protected var label:FText;
@@ -53,13 +53,15 @@ package Framework.GUI
 
 			if(isColliding)
 			{
-				if(FG.mouse.isDown())
+				if(FG.mouse.isDown() && state != DOWN)
 				{
 					state = DOWN;
+					draws = true;
 				}
-				else
+				else if(state != OVER)
 				{
 					state = OVER;
+					draws = true;
 				}
 				
 				// Make sure we only trigger the roll over func once per roll
@@ -80,7 +82,11 @@ package Framework.GUI
 			}
 			else
 			{
-				state = NORMAL;
+				if(state != NORMAL)
+				{
+					state = NORMAL;
+					draws = true;
+				}
 
 				// Reset the over trigger
 				if(triggered)
