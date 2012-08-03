@@ -67,27 +67,34 @@ package Framework
 
 		public function Remove(o:FObject, Splice:Boolean = false):FObject
 		{
-			var i:int = members.indexOf(o);
-			
-			// If member doesn't exist, we're done
-			if(i < 0 || i >= members.length)
-				return null;
-
-			// Remove the sprite from being displayed in the group
-			removeChild(o);
-
-			// Either splice it (expensive) or just set obj to null
-			if(Splice)
+			if(o != null)
 			{
-				members.splice(i, 1);
-				length--;
+				var i:int = members.indexOf(o);
+				
+				// If member doesn't exist, we're done
+				if(i < 0 || i >= members.length)
+					return null;
+
+				// Remove the sprite from being displayed in the group
+				removeChild(o);
+
+				// Either splice it (expensive) or just set obj to null
+				if(Splice)
+				{
+					members.splice(i, 1);
+					length--;
+				}
+				else
+				{
+					members[i] = null
+				}
+
+				return o;
 			}
 			else
 			{
-				members[i] = null
+				return null;
 			}
-
-			return o;
 		}
 
 
@@ -109,7 +116,14 @@ package Framework
 				for each(var o:FObject in members)
 				{
 					if(o != null && o.thinks && o.exists)
+					{
 						o.Update();
+					}
+					else if(o != null && !o.exists)
+					{
+						o.Destroy();
+						Remove(o);
+					}
 				}
 			}
 		}

@@ -19,7 +19,7 @@ package Framework.GUI.Buttons
 		protected var offsetX:Number;
 		protected var offsetY:Number;
 
-		public function FCircleButton(X:int = 0, Y:int = 0, Label:String = null, OnUp:Function = null)
+		public function FCircleButton(X:int = 0, Y:int = 0, Label:String = "", OnUp:Function = null)
 		{
 			super(X, Y, Label, OnUp);
 		}
@@ -33,15 +33,11 @@ package Framework.GUI.Buttons
 			label.UpdateFormat();
 
 			radius = label.width/1.33;
-
-			//offsetX = label.width/2;
-			//offsetY = label.height/2;
 		}
 
 		override protected function doHitTest():Boolean
 		{
-			//return FCollide.PointInCircle(FG.mouse, new FCircle(x + offsetX, y + offsetY, radius));
-			return FCollide.PointInCircle(FG.mouse, new FCircle(x, y, radius));
+			return FCollide.PointInCircle(pointToCheck, new FCircle(x, y, radius));
 		}
 
 		override public function Draw():void
@@ -50,9 +46,6 @@ package Framework.GUI.Buttons
 			super.Draw();
 
 			graphics.drawCircle(0, 0, radius);
-			graphics.endFill();
-			graphics.beginFill(0);
-			graphics.drawCircle(0,0,1);
 			graphics.endFill();
 			draws = false;
 		}

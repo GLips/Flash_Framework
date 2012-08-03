@@ -5,6 +5,7 @@ package Framework.GUI
 	import Framework.FG;
 	import Framework.Utils.FCollide;
 	import Framework.Shapes.FRect;
+	import Framework.Maths.FPoint;
 
 	public class FButton extends FGUI
 	{
@@ -14,6 +15,9 @@ package Framework.GUI
 		public var onUp:Function;
 		public var onOver:Function;
 		public var onDown:Function;
+
+		// Defaults to FG.mouse
+		public var pointToCheck:FPoint;
 
 		// State tracking
 		private var lastState:int;
@@ -31,7 +35,7 @@ package Framework.GUI
 		// Over function trigger
 		private var triggered:Boolean;
 
-		public function FButton(X:int = 0, Y:int = 0, Label:String = null, OnUp:Function = null)
+		public function FButton(X:int = 0, Y:int = 0, Label:String = "", OnUp:Function = null)
 		{
 			onUp = OnUp;
 
@@ -40,10 +44,20 @@ package Framework.GUI
 
 			super(X, Y);
 		}
+
 		override public function Create():void
 		{
 			state = NORMAL;
 			bgColor = 0x0066CC;
+			pointToCheck = FG.mouse;
+		}
+
+		override public function Destroy():void
+		{
+			pointToCheck = null;
+			label = null;
+
+			super.Destroy();
 		}
 
 		override public function Update():void
@@ -105,7 +119,7 @@ package Framework.GUI
 
 		protected function doHitTest():Boolean
 		{
-			return FCollide.PointInRect(FG.mouse, new FRect(x, y, width, height));
+			return FCollide.PointInRect(pointToCheck, new FRect(x, y, width, height));
 		}
 	}
 
