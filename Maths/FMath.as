@@ -13,8 +13,9 @@ package Framework.Maths
 		// Round a number to a number of decimal places
 		public static function round(x:Number, precision:int = 0):Number
 		{
-			precision = 10^precision;
-			return Math.round(x * precision)/precision;
+			var mult:int = 1;
+			while(precision > 0) { mult *= 10; precision--; }
+			return Math.round(int(x * mult))/mult;
 		}
 	}
 }

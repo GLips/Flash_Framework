@@ -5,9 +5,9 @@ package Framework.GUI
 	import flash.text.TextFieldType;
 	import flash.text.TextFieldAutoSize;
 
-	import Framework.FObject;
+	import Framework.GUI.FGUI;
 
-	public class FText extends FObject
+	public class FText extends FGUI
 	{
 
 		public var label:String;
