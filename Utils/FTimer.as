@@ -21,6 +21,12 @@ package Framework.Utils
 			draws = false;
 		}
 
+		override public function Destroy():void
+		{
+			super.Destroy();
+			func = null;
+		}
+
 		override public function Update():void
 		{
 			seconds -= Number(FG.dt/1000);

@@ -57,6 +57,13 @@ package Framework.GUI
 			height = field.height;
 		}
 
+		override public function Destroy():void
+		{
+			super.Destroy();
+			field = null;
+			tFormat = null;
+		}
+
 		public function UpdateText(s:String):void
 		{
 			label = s;

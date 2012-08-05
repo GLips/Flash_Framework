@@ -56,6 +56,9 @@ package Framework.GUI
 		{
 			pointToCheck = null;
 			label = null;
+			onUp = null;
+			onDown = null;
+			onOver = null;
 
 			super.Destroy();
 		}
