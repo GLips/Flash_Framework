@@ -17,5 +17,16 @@ package Framework.Maths
 			while(precision > 0) { mult *= 10; precision--; }
 			return Math.round(int(x * mult))/mult;
 		}
+
+		// Returns the number clamped with in the bounds given
+		public static function clamp(x:Number, min:Number = 0, max:Number = 1):Number
+		{
+			if(x < min)
+				return min;
+			else if(x > max)
+				return max;
+			else
+				return x;
+		}
 	}
 }
