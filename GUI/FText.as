@@ -11,7 +11,7 @@ package Framework.GUI
 	{
 
 		public var label:String;
-		private var field:TextField;
+		public var field:TextField;
 		public var tFormat:TextFormat;
 
 		public var size:int = 14;
@@ -93,17 +93,13 @@ package Framework.GUI
 
 			addChild(field);
 			staged = true;
+		}
 
-			if(textAlign != FText.ALIGN_CENTER)
-			{
-				field.x = 0;
-				field.y = 0;
-			}
-			else
-			{
-				field.x = -field.width/2;
-				field.y = -field.height/2;
-			}
+		public function CenterText():FText
+		{
+			field.x = -field.width/2;
+			field.y = -field.height/2;
+			return(this);
 		}
 	}
 

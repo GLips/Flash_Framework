@@ -31,6 +31,7 @@ package Framework.GUI.Buttons
 			label.textColor = 0xFFFFFF;
 			label.textAlign = FText.ALIGN_CENTER;
 			label.UpdateFormat();
+			label.CenterText();
 
 			radius = label.width/1.33;
 		}
