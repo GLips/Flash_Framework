@@ -11,7 +11,7 @@ package Framework.Maths
 		public static function DegreesToRadians(x:Number):Number { return x / 57.2958; }
 
 		// Round a number to a number of decimal places
-		public static function round(x:Number, precision:int = 0):Number
+		public static function Round(x:Number, precision:int = 0):Number
 		{
 			var mult:int = 1;
 			while(precision > 0) { mult *= 10; precision--; }
@@ -19,7 +19,7 @@ package Framework.Maths
 		}
 
 		// Returns the number clamped with in the bounds given
-		public static function clamp(x:Number, min:Number = 0, max:Number = 1):Number
+		public static function Clamp(x:Number, min:Number = 0, max:Number = 1):Number
 		{
 			if(x < min)
 				return min;
