@@ -71,7 +71,7 @@ package Framework
 
 		public static function get framerate():Number
 		{
-			return FMath.round(1000/FG.dt);
+			return FMath.Round(1000/FG.dt);
 		}
 
 		public static function get stage():Stage
