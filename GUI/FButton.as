@@ -26,15 +26,27 @@ package Framework.GUI
 		private const OVER:int 		= 2;
 		private const NORMAL:int	= 3;
 
-		// Drawing style
-		public var _bgColor:Number;
-		public function get bgColor():Number { return _bgColor; }
+		private var styles:Array;
+
 		// Automatically redraw when background color is changed
-		public function set bgColor(x:Number):void { _bgColor = x; draws = true; }
+		public function setbgColor(x:Number, s:int = NORMAL):void { styles[s]['bgColor'] = x; draws = true; }
+
+		public function get currentStyle():Array
+		{ 
+			if(styles[state] != null)
+				return styles[state];
+			else
+				return styles[NORMAL];
+		}
 
 		// Over function trigger
 		private var triggered:Boolean;
 
+		/*******************************
+		** 
+		** INIT Function
+		** 
+		********************************/
 		public function FButton(X:int = 0, Y:int = 0, Label:String = "", OnUp:Function = null)
 		{
 			onUp = OnUp;
@@ -45,13 +57,39 @@ package Framework.GUI
 			super(X, Y);
 		}
 
+
+		/*******************************
+		** 
+		** CREATE Function
+		** 
+		********************************/
 		override public function Create():void
 		{
+			styles = new Array();
 			state = NORMAL;
-			bgColor = 0x0066CC;
+
+			// Initialize styles
+			styles[NORMAL] = new Array();
+			styles[OVER] = new Array();
+			styles[DOWN] = new Array();
+
+			styles[NORMAL]['bgColor'] = 0x0066CC;
+			styles[OVER]['bgColor'] = 0x0077DD;
+			styles[DOWN]['bgColor'] = 0x0055BB;
+
+			styles[NORMAL]['lineColor'] = 0x0044AA;
+			styles[OVER]['lineColor'] = 0x0055BB;
+			styles[DOWN]['lineColor'] = 0x003399;
+
 			pointToCheck = FG.mouse;
 		}
 
+
+		/*******************************
+		** 
+		** DESTROY Function
+		** 
+		********************************/
 		override public function Destroy():void
 		{
 			pointToCheck = null;
@@ -63,6 +101,12 @@ package Framework.GUI
 			super.Destroy();
 		}
 
+
+		/*******************************
+		** 
+		** UPDATE Function
+		** 
+		********************************/
 		override public function Update():void
 		{
 			// Make sure we're in the button's hitbox
@@ -75,7 +119,7 @@ package Framework.GUI
 					state = DOWN;
 					draws = true;
 				}
-				else if(state != OVER)
+				else if(!FG.mouse.isDown() && state != OVER)
 				{
 					state = OVER;
 					draws = true;
@@ -117,7 +161,8 @@ package Framework.GUI
 		override public function Draw():void
 		{
 			graphics.clear();
-			graphics.beginFill(bgColor);
+			graphics.lineStyle(1, currentStyle['lineColor']);
+			graphics.beginFill(currentStyle['bgColor']);
 		}
 
 		protected function doHitTest():Boolean
