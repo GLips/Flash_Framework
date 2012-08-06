@@ -116,11 +116,14 @@ package Framework.GUI
 			{
 				if(FG.mouse.isDown() && state != DOWN)
 				{
+					label.y++;
 					state = DOWN;
 					draws = true;
 				}
 				else if(!FG.mouse.isDown() && state != OVER)
 				{
+					if(state == DOWN)
+						label.y--;
 					state = OVER;
 					draws = true;
 				}
@@ -145,6 +148,8 @@ package Framework.GUI
 			{
 				if(state != NORMAL)
 				{
+					if(state == DOWN)
+						label.y--;
 					state = NORMAL;
 					draws = true;
 				}

@@ -34,6 +34,9 @@ package Framework.GUI.Buttons
 			label.textColor = 0xFFFFFF;
 			label.textAlign = FText.ALIGN_CENTER;
 			label.UpdateFormat();
+			
+			label.x = Width/2;
+			label.y = Height/2;
 		}
 
 		override public function Draw():void
