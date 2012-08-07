@@ -6,6 +6,8 @@ package Framework
 
 	import flash.utils.getTimer;
 
+	import flash.system.System;
+
 	import Framework.Input.*;
 	import Framework.Maths.FMath;
 
@@ -69,10 +71,11 @@ package Framework
 			_game._requestedScene = s;
 		}
 
-		public static function get framerate():Number
-		{
-			return FMath.Round(1000/FG.dt);
-		}
+		// Return game's framerate
+		public static function get framerate():Number { return FMath.Round(1000/FG.dt); }
+
+		// Return total memory used by Flash (includes output from every instance of Flash open currently)
+        public static function get totalMemory():Number { return System.totalMemory; }
 
 		public static function get stage():Stage
 		{
