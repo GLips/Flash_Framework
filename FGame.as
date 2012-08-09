@@ -2,6 +2,7 @@ package Framework
 {
 	import flash.display.Sprite;
 	import flash.display.Graphics;
+	import flash.display.StageScaleMode;
 
 	import flash.events.*;
 
@@ -31,6 +32,8 @@ package Framework
 
 		public function Create(e:Event):void
 		{
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+
 			// Mouse hooks
 			stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);

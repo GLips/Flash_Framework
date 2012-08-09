@@ -8,6 +8,7 @@ package Framework
 		public function FSprite(X:int = 0, Y:int = 0)
 		{
 			super(X,Y);
+			draws = true;
 		}
 	}
 }

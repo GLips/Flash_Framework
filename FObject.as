@@ -5,11 +5,12 @@ package Framework
 	public class FObject extends Sprite
 	{
 
-		public var thinks:Boolean;	// Set to true
-		public var draws:Boolean = true;	// False
+		public var thinks:Boolean;			// True
+		public var draws:Boolean;			// False
 		protected var paused:Boolean;		// False
 
-		public var exists:Boolean;	// Set to true
+		public var exists:Boolean;			// True
+		public var alive:Boolean;			// True
 
 		public function FObject(X:int = 0, Y:int = 0)
 		{
@@ -19,6 +20,7 @@ package Framework
 			Create();
 			exists = true;
 			thinks = true;
+			alive = true;
 		}
 
 		public function Create():void
@@ -39,6 +41,12 @@ package Framework
 		public function Draw():void
 		{
 			// Called every frame if visible == true;
+		}
+
+		public function Kill():void
+		{
+			exists = false;
+			alive = false;
 		}
 	}
 
