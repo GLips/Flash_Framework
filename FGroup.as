@@ -14,6 +14,8 @@ package Framework
 			_maxSize = maxSize;
 
 			super();
+
+			draws = true;
 		}
 
 		/*

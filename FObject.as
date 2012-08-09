@@ -12,10 +12,8 @@ package Framework
 		public var exists:Boolean;			// True
 		public var alive:Boolean;			// True
 
-		public function FObject(X:int = 0, Y:int = 0)
+		public function FObject()
 		{
-			x = X;
-			y = Y;
 			super();
 			Create();
 			exists = true;
