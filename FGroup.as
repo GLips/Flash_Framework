@@ -119,11 +119,6 @@ package Framework
 					{
 						o.Update();
 					}
-					else if(o != null && !o.exists)
-					{
-						o.Destroy();
-						Remove(o);
-					}
 				}
 			}
 		}
