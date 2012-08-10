@@ -49,6 +49,8 @@ package Framework.GUI
 
 		override public function Create():void
 		{
+			super.Create();
+
 			textAlign = FText.ALIGN_LEFT;
 		
 			UpdateFormat();
