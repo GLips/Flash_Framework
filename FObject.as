@@ -45,6 +45,21 @@ package Framework
 		{
 			exists = false;
 			alive = false;
+			visible = false;
+		}
+
+		public function Revive():void
+		{
+			exists = true;
+			alive = true;
+			visible = true;
+		}
+
+		public function Reset(X:int = 0, Y:int = 0):void
+		{
+			Revive();
+			x = X;
+			y = Y;
 		}
 	}
 

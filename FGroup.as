@@ -117,7 +117,7 @@ package Framework
 			{
 				for each(var o:FObject in members)
 				{
-					if(o != null && o.thinks && o.exists)
+					if(o != null && o.exists && o.thinks)
 					{
 						o.Update();
 					}
@@ -132,6 +132,37 @@ package Framework
 				if(o != null && o.draws && o.exists)
 					o.Draw();
 			}
+		}
+
+		// To-do: Implement maxSize recycling handling
+		public function Recycle(ObjectClass:Class = null):FObject
+		{
+			var o:FObject = getFirstAvailable(ObjectClass);
+			
+			if(o != null)
+				return o;
+			else if(ObjectClass == null)
+				return null;
+
+			return Add(new ObjectClass() as FObject);
+
+		}
+
+		private function getFirstAvailable(ObjectClass:Class = null):FObject
+		{
+			var o:FObject;
+			var i:uint = 0;
+
+			while(i < length)
+			{
+				o = members[i++] as FObject;
+
+				// Things in () must be encased for some reason. Don't change.
+				if(o != null && !o.exists && ((ObjectClass == null) || (o is ObjectClass)))
+					return o;
+			}
+
+			return null;
 		}
 
 		public function Pause():void { paused = true; }
