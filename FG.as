@@ -17,7 +17,7 @@ package Framework
 		// Timekeeping
 		public static var firstTime:int;
 		public static var lastTime:int;
-		public static var dt:int;
+		public static var dt:Number;
 
 		// Dimensions
 		public static var width:int;
@@ -57,7 +57,7 @@ package Framework
 		{
 			var curTime:int = getTimer();
 
-			FG.dt = curTime - FG.lastTime;
+			FG.dt = (curTime - FG.lastTime)/1000;
 			FG.lastTime = curTime;
 		}
 
@@ -72,7 +72,7 @@ package Framework
 		}
 
 		// Return game's framerate
-		public static function get framerate():Number { return FMath.Round(1000/FG.dt); }
+		public static function get framerate():Number { return FMath.Round(1/FG.dt); }
 
 		// Return total memory used by Flash (includes output from every instance of Flash open currently)
         public static function get totalMemory():Number { return System.totalMemory; }
