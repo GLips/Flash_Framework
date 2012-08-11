@@ -29,7 +29,7 @@ package Framework.Utils
 
 		override public function Update():void
 		{
-			seconds -= Number(FG.dt/1000);
+			seconds -= Number(FG.dt);
 			if(seconds <= 0)
 			{
 				func();

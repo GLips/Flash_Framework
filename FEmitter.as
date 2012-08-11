@@ -19,6 +19,10 @@ package Framework
 		public var Width:uint;
 		public var Height:uint;
 
+		// Track to help keep particles in the same position when this moves
+		private var _lastX:int;
+		private var _lastY:int;
+
 		public function FEmitter(X:int = 0, Y:int = 0, maxSize:uint = 0)
 		{
 			maxSpeed = new FVec();
@@ -47,6 +51,9 @@ package Framework
 			minRotation = -360;
 			lifetime = 1;
 			SetSize();
+
+			_lastX = x;
+			_lastY = y;
 		}
 
 		override public function Destroy():void
@@ -62,6 +69,9 @@ package Framework
 		{
 			// Handle emitting over time vs. explosions
 			super.Update();
+
+			_lastX = x;
+			_lastY = y;
 		}
 
 
@@ -74,6 +84,10 @@ package Framework
 		// Launch ze particles!
 		public function Start():void
 		{
+			// Reset last positions on start in case emitter has just moved
+			_lastX = x;
+			_lastY = y;
+
 			for(var i:int = 0; i < length; i++)
 			{
 				EmitParticle();
@@ -82,7 +96,7 @@ package Framework
 
 		public function EmitParticle():void
 		{
-			var particle:FParticle = FG._scene.Recycle(FParticle) as FParticle;
+			var particle:FParticle = Recycle(FParticle) as FParticle;
 			particle.lifetime = lifetime;
 
 			// Set up velocity
@@ -110,7 +124,7 @@ package Framework
 			particle.rotation = Math.random() * maxRotation + minRotation;
 
 			particle.acceleration = acceleration;
-			particle.Reset(Math.random() * Width + x, Math.random() * Height + y);
+			particle.Reset(Math.random() * Width, Math.random() * Height);
 			
 			particle.OnEmit();
 		}
@@ -133,6 +147,24 @@ package Framework
 				p.Kill();
 			}
 			return this;
+		}
+
+		// Keep particles in the same location in world space even if the emitter is moving
+		public function UpdateParticleLocations():void
+		{
+			var deltaX:int = _lastX - x;
+			var deltaY:int = _lastY - y;
+			if(!paused && thinks && (deltaX != 0 || deltaY != 0))
+			{
+				for each(var o:FParticle in members)
+				{
+					if(o != null && o.exists && o.thinks)
+					{
+						o.x += deltaX;
+						o.y += deltaY;
+					}
+				}
+			}
 		}
 
 		public function SetSize(W:uint = 1, H:uint = 1):void { Width = W; Height = H; }
