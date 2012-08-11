@@ -13,8 +13,8 @@ package Framework
 		public var maxRotation:Number;
 		public var minRotation:Number;
 		public var lifetime:Number;
-		public var friction:Number;
-		public var gravity:FVec;
+		public var drag:FVec;
+		public var acceleration:FVec;
 
 		public var Width:uint;
 		public var Height:uint;
@@ -41,11 +41,11 @@ package Framework
 			super.Create();
 			SetXSpeed();	// Defaults to -100, 100
 			SetYSpeed();	// Defaults to -100, 100
-			gravity = new FVec(0, 9.8);
+			acceleration = new FVec(0, 50);
+			drag = new FVec(50, 0);
 			maxRotation = 360;
 			minRotation = -360;
-			lifetime = 3;
-			friction = 0.98;
+			lifetime = 1;
 			SetSize();
 		}
 
@@ -54,7 +54,8 @@ package Framework
 			super.Destroy();
 			maxSpeed = null;
 			minSpeed = null;
-			gravity = null;
+			acceleration = null;
+			drag = null;
 		}
 
 		override public function Update():void
@@ -81,7 +82,7 @@ package Framework
 
 		public function EmitParticle():void
 		{
-			var particle:FParticle = Recycle(FParticle) as FParticle;
+			var particle:FParticle = FG._scene.Recycle(FParticle) as FParticle;
 			particle.lifetime = lifetime;
 
 			// Set up velocity
@@ -96,17 +97,20 @@ package Framework
 				v.y = minSpeed.y;
 			particle.velocity = v;
 
-			particle.friction = friction;
+			particle.SetXSpeed(minSpeed.x, maxSpeed.x);
+			particle.SetYSpeed(minSpeed.y, maxSpeed.y);
+
+			particle.drag = drag;
 
 			// Set up inital particle rotation and rotation speed
 			if(maxRotation != minRotation)
-				particle.rot = Math.random() * maxRotation + minRotation;
+				particle.spin = minRotation + Math.random() * (maxRotation - minRotation);
 			else
-				particle.rot = minRotation;
+				particle.spin = minRotation;
 			particle.rotation = Math.random() * maxRotation + minRotation;
 
-			particle.gravity = gravity;
-			particle.Reset(Math.random() * Width, Math.random() * Height);
+			particle.acceleration = acceleration;
+			particle.Reset(Math.random() * Width + x, Math.random() * Height + y);
 			
 			particle.OnEmit();
 		}
@@ -125,7 +129,6 @@ package Framework
 					p = new FParticle();
 				else
 					p = new particleType();
-				p.name = "Particle #"+i;
 				Add(p);
 				p.Kill();
 			}
@@ -133,7 +136,7 @@ package Framework
 		}
 
 		public function SetSize(W:uint = 1, H:uint = 1):void { Width = W; Height = H; }
-		public function SetXSpeed(min:int = -100, max:int = 100):void { minSpeed.x = min; maxSpeed.x = max; }
-		public function SetYSpeed(min:int = -100, max:int = 100):void { minSpeed.y = min; maxSpeed.y = max; }
+		public function SetXSpeed(min:int = -25, max:int = 25):void { minSpeed.x = min; maxSpeed.x = max; }
+		public function SetYSpeed(min:int = -25, max:int = 25):void { minSpeed.y = min; maxSpeed.y = max; }
 	}
 }

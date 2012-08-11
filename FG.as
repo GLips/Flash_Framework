@@ -8,6 +8,8 @@ package Framework
 
 	import flash.system.System;
 
+	import Framework.FGroup;
+
 	import Framework.Input.*;
 	import Framework.Maths.FMath;
 
@@ -30,7 +32,7 @@ package Framework
 		public static var _game:FGame;
 
 		// Scenes
-		public static var _scene:FScene;	// The current scene
+		public static var _scene:FScene;	// The most recently created scene
 		public static var _newScene:FScene;	// The scene to switch to
 
 		public function FG():void
@@ -59,11 +61,6 @@ package Framework
 
 			FG.dt = (curTime - FG.lastTime)/1000;
 			FG.lastTime = curTime;
-		}
-
-		public static function InitScene(s:FScene):void
-		{
-			_scene = s;
 		}
 
 		public static function SwitchScene(s:FScene, transition:int = 0):void

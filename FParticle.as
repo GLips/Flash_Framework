@@ -34,7 +34,7 @@ package Framework
 		{
 			super.Create();
 
-			lifetime = 3;
+			lifetime = 1;
 		}
 
 		override public function Update():void

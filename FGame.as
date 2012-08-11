@@ -6,6 +6,8 @@ package Framework
 
 	import flash.events.*;
 
+	import Framework.FG;
+
 	import flash.utils.getTimer;
 
 	public class FGame extends Sprite
@@ -19,10 +21,8 @@ package Framework
 		{
 			FG.Init(g, w, h);
 
-			scene = new s();
+			FG._scene = scene = new s();
 			_requestedScene = scene;
-
-			FG.InitScene(scene);
 
 			addChild(scene);
 
@@ -32,6 +32,8 @@ package Framework
 
 		public function Create(e:Event):void
 		{
+			removeEventListener(Event.ENTER_FRAME, Create);
+
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 
 			// Mouse hooks
@@ -71,8 +73,8 @@ package Framework
 			scene.Destroy();
 			removeChild(scene);
 			scene = _requestedScene;
+			FG._scene = scene;
 			addChild(scene);
-			//scene.Create();
 		}
 
 		// Pass events mouse object
