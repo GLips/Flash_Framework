@@ -36,6 +36,8 @@ package Framework
 
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 
+			FG.UpdateTime();
+
 			// Mouse hooks
 			stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);

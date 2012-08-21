@@ -10,6 +10,7 @@ package Framework
 
 		public var maxSpeed:FVec;
 		public var minSpeed:FVec;
+		public var topSpeed:FVec;
 		public var maxRotation:Number;
 		public var minRotation:Number;
 		public var lifetime:Number;
@@ -27,6 +28,7 @@ package Framework
 		{
 			maxSpeed = new FVec();
 			minSpeed = new FVec();
+			topSpeed = new FVec();
 
 			super(maxSize);
 			
@@ -43,10 +45,11 @@ package Framework
 		override public function Create():void
 		{
 			super.Create();
-			SetXSpeed();	// Defaults to -100, 100
-			SetYSpeed();	// Defaults to -100, 100
+			SetXSpeed();	// Defaults to -25, 25
+			SetYSpeed();	// Defaults to -25, 25
+			SetMaxSpeed();
 			acceleration = new FVec(0, 50);
-			drag = new FVec(50, 0);
+			drag = new FVec(20, 0);
 			maxRotation = 360;
 			minRotation = -360;
 			lifetime = 1;
@@ -63,6 +66,7 @@ package Framework
 			minSpeed = null;
 			acceleration = null;
 			drag = null;
+			topSpeed = null;
 		}
 
 		override public function Update():void
@@ -115,6 +119,7 @@ package Framework
 			particle.SetYSpeed(minSpeed.y, maxSpeed.y);
 
 			particle.drag = drag;
+			particle.topSpeed = topSpeed;
 
 			// Set up inital particle rotation and rotation speed
 			if(maxRotation != minRotation)
@@ -168,6 +173,7 @@ package Framework
 		}
 
 		public function SetSize(W:uint = 1, H:uint = 1):void { Width = W; Height = H; }
+		public function SetMaxSpeed(maxX:int = 25, maxY:int = 25):void { topSpeed.x = maxX; topSpeed.y = maxY; }
 		public function SetXSpeed(min:int = -25, max:int = 25):void { minSpeed.x = min; maxSpeed.x = max; }
 		public function SetYSpeed(min:int = -25, max:int = 25):void { minSpeed.y = min; maxSpeed.y = max; }
 	}

@@ -14,6 +14,7 @@ package Framework
 		public var drag:FVec;
 		public var maxSpeed:FVec;
 		public var minSpeed:FVec;
+		public var topSpeed:FVec;
 
 		
 
@@ -39,6 +40,7 @@ package Framework
 			drag = new FVec();
 			maxSpeed = new FVec();
 			minSpeed = new FVec();
+			topSpeed = new FVec();
 		}
 
 		override public function Destroy():void
@@ -48,29 +50,15 @@ package Framework
 			drag = null;
 			maxSpeed = null;
 			minSpeed = null;
+			topSpeed = null;
 		}
 
 		override public function Update():void
 		{
 			super.Update();
 
-			//var velocityDelta:Number;
-			velocity.x = computeVelocity(velocity.x, acceleration.x, drag.x, maxSpeed.x);
-			velocity.y = computeVelocity(velocity.y, acceleration.y, drag.y, maxSpeed.y);
-			//velocity.x += velocityDelta;
-
-			/*
-			velocityDelta = (FlxU.computeVelocity(velocity.x,acceleration.x,drag.x,maxVelocity.x) - velocity.x)/2;
-			velocity.x += velocityDelta;
-			delta = velocity.x*FlxG.elapsed;
-			velocity.x += velocityDelta;
-			x += velocity.x * friction;
-			*/
-			
-			//velocity.x *= friction;
-
-			//velocity.y += computeVelocity(velocity.y, acceleration.y, drag.y);
-			//velocity.y *= friction;
+			velocity.x = computeVelocity(velocity.x, acceleration.x, drag.x, topSpeed.x);
+			velocity.y = computeVelocity(velocity.y, acceleration.y, drag.y, topSpeed.y);
 
 			x += velocity.x;
 			y += velocity.y;
@@ -103,6 +91,7 @@ package Framework
 			return Velocity;
 		}
 
+		public function SetMaxSpeed(min:int = -100, max:int = 100):void { topSpeed.x = min; topSpeed.y = max; }
 		public function SetXSpeed(min:int = -100, max:int = 100):void { minSpeed.x = min; maxSpeed.x = max; }
 		public function SetYSpeed(min:int = -100, max:int = 100):void { minSpeed.y = min; maxSpeed.y = max; }
 

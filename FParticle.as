@@ -4,6 +4,8 @@ package Framework
 	import Framework.FG;
 	import Framework.FSprite;
 
+	import Framework.Maths.FMath;
+
 	public class FParticle extends FSprite
 	{
 		// Time left before death
