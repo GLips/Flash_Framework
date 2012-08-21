@@ -28,5 +28,10 @@ package Framework.Maths
 			else
 				return x;
 		}
+
+		public static function Random(min:Number = 0, max:Number = 1):Number
+		{
+			return min + Math.random() * (max - min);
+		}
 	}
 }

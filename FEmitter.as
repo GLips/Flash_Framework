@@ -3,7 +3,9 @@ package Framework
 
 	import Framework.FGroup;
 	import Framework.FParticle;
+
 	import Framework.Maths.FVec;
+	import Framework.Maths.FMath;
 
 	public class FEmitter extends FGroup
 	{
@@ -13,12 +15,22 @@ package Framework
 		public var topSpeed:FVec;
 		public var maxRotation:Number;
 		public var minRotation:Number;
-		public var lifetime:Number;
 		public var drag:FVec;
 		public var acceleration:FVec;
 
 		public var Width:uint;
 		public var Height:uint;
+
+		// Keep track of how to emit particles
+		public var emitType:uint;
+		public var quantity:int;
+		public var interval:Number;
+		public var lifetime:Number;
+
+		// Constants to track emit type
+		public static const EXPLODE:uint	= 1;
+		public static const TIMED:uint		= 2;
+		public static const CONSTANT:uint	= 3;
 
 		// Track to help keep particles in the same position when this moves
 		private var _lastX:int;
@@ -74,6 +86,19 @@ package Framework
 			// Handle emitting over time vs. explosions
 			super.Update();
 
+			if(emitType == EXPLODE)
+			{
+				emitType = 0;
+				for(var i:int = 0; i < quantity; i++)
+				{
+					EmitParticle();
+				}
+			}
+			else if(emitType == CONSTANT || emitType == TIMED)
+			{
+				//
+			}
+
 			_lastX = x;
 			_lastY = y;
 		}
@@ -86,16 +111,19 @@ package Framework
 		**********************/
 
 		// Launch ze particles!
-		public function Start():void
+		public function Start(EmitType:uint = EXPLODE, Lifetime:Number = 1, Quantity:int = 0, Interval:Number = 0.1):void
 		{
-			// Reset last positions on start in case emitter has just moved
-			_lastX = x;
-			_lastY = y;
+			// If emitter has moved, keep the emitted particles in the same place
+			UpdateParticleLocations();
 
-			for(var i:int = 0; i < length; i++)
-			{
-				EmitParticle();
-			}
+			emitType = EmitType;
+			lifetime = Lifetime;
+			interval = Interval;
+
+			if(Quantity != 0)
+				quantity = Quantity;
+			else
+				quantity = length;
 		}
 
 		public function EmitParticle():void
@@ -106,24 +134,27 @@ package Framework
 			// Set up velocity
 			var v:FVec = new FVec();
 			if(maxSpeed.x != minSpeed.x)
-				v.x = minSpeed.x + Math.random() * (maxSpeed.x - minSpeed.x);
+				v.x = FMath.Random(minSpeed.x, maxSpeed.x);
 			else
 				v.x = minSpeed.x;
 			if(maxSpeed.y != minSpeed.y)
-				v.y = minSpeed.y + Math.random() * (maxSpeed.y - minSpeed.y);
+				v.y = FMath.Random(minSpeed.y, maxSpeed.y);
 			else
 				v.y = minSpeed.y;
 			particle.velocity = v;
 
+			// Set particle's range of possible starting speeds
 			particle.SetXSpeed(minSpeed.x, maxSpeed.x);
 			particle.SetYSpeed(minSpeed.y, maxSpeed.y);
 
 			particle.drag = drag;
+
+			// Set particle's top possible speed
 			particle.topSpeed = topSpeed;
 
 			// Set up inital particle rotation and rotation speed
 			if(maxRotation != minRotation)
-				particle.spin = minRotation + Math.random() * (maxRotation - minRotation);
+				particle.spin = FMath.Random(minRotation, maxRotation);
 			else
 				particle.spin = minRotation;
 			particle.rotation = Math.random() * maxRotation + minRotation;
@@ -170,6 +201,10 @@ package Framework
 					}
 				}
 			}
+
+			// If the func is called twice it won't update twice
+			_lastX = x;
+			_lastY = y;
 		}
 
 		public function SetSize(W:uint = 1, H:uint = 1):void { Width = W; Height = H; }

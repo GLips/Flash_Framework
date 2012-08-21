@@ -35,7 +35,7 @@ package Framework
 		override public function Create():void
 		{
 			velocity = new FVec();
-			spin = 0;	// Rename rot;
+			spin = 0;
 			acceleration = new FVec();
 			drag = new FVec();
 			maxSpeed = new FVec();

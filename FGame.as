@@ -36,6 +36,7 @@ package Framework
 
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 
+			// Necessary to have the proper delta time value on first scene update call
 			FG.UpdateTime();
 
 			// Mouse hooks

@@ -22,5 +22,10 @@ package Framework.Utils
 		{
 			return FArray.Sum(a) / a.length;
 		}
+
+		public static function GetRandom(a:Array):*
+		{
+			return a[Math.round(Math.random() * (a.length - 1))];
+		}
 	}
 }
