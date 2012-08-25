@@ -9,6 +9,7 @@ package Framework
 	import flash.system.System;
 
 	import Framework.FGroup;
+	import Framework.FSound;
 
 	import Framework.Input.*;
 	import Framework.Maths.FMath;
@@ -27,6 +28,9 @@ package Framework
 
 		// Input
 		public static var mouse:FMouse;
+
+		// Sound
+		public static var soundEngine:FSound;
 
 		// The game object, used to get references to the stage
 		public static var _game:FGame;
@@ -51,6 +55,9 @@ package Framework
 
 			FG.firstTime = getTimer();
 			FG.lastTime = firstTime;
+
+			soundEngine = new FSound();
+			soundEngine.Init();
 
 			FG.mouse = new FMouse();
 		}

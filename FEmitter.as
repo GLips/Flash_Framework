@@ -32,15 +32,18 @@ package Framework
 		public static const TIMED:uint		= 2;
 		public static const CONSTANT:uint	= 3;
 
+		private var emitTracker:Number;
+
 		// Track to help keep particles in the same position when this moves
 		private var _lastX:int;
 		private var _lastY:int;
 
 		public function FEmitter(X:int = 0, Y:int = 0, maxSize:uint = 0)
 		{
-			maxSpeed = new FVec();
-			minSpeed = new FVec();
-			topSpeed = new FVec();
+			maxSpeed	= new FVec();
+			minSpeed	= new FVec();
+			topSpeed	= new FVec();
+			drag		= new FVec();
 
 			super(maxSize);
 			
@@ -59,13 +62,14 @@ package Framework
 			super.Create();
 			SetXSpeed();	// Defaults to -25, 25
 			SetYSpeed();	// Defaults to -25, 25
-			SetMaxSpeed();
+			SetTopSpeed();
 			acceleration = new FVec(0, 50);
-			drag = new FVec(20, 0);
+			SetDrag();
 			maxRotation = 360;
 			minRotation = -360;
 			lifetime = 1;
 			SetSize();
+			emitTracker = 0;
 
 			_lastX = x;
 			_lastY = y;
@@ -96,7 +100,13 @@ package Framework
 			}
 			else if(emitType == CONSTANT || emitType == TIMED)
 			{
-				//
+				var numToEmit:Number = FG.dt / interval + emitTracker;
+				while(numToEmit >= 1)
+				{
+					EmitParticle();
+					numToEmit--;
+				}
+				emitTracker = numToEmit;
 			}
 
 			_lastX = x;
@@ -207,8 +217,16 @@ package Framework
 			_lastY = y;
 		}
 
+		// Place the emitter at the origin of an object
+		public function At(o:FObject):void
+		{
+			x = o.x;
+			y = o.y;
+		}
+
 		public function SetSize(W:uint = 1, H:uint = 1):void { Width = W; Height = H; }
-		public function SetMaxSpeed(maxX:int = 25, maxY:int = 25):void { topSpeed.x = maxX; topSpeed.y = maxY; }
+		public function SetDrag(X:uint = 15, Y:uint = 0):void { drag.x = X; drag.y = Y; }
+		public function SetTopSpeed(maxX:int = 25, maxY:int = 25):void { topSpeed.x = maxX; topSpeed.y = maxY; }
 		public function SetXSpeed(min:int = -25, max:int = 25):void { minSpeed.x = min; maxSpeed.x = max; }
 		public function SetYSpeed(min:int = -25, max:int = 25):void { minSpeed.y = min; maxSpeed.y = max; }
 	}
