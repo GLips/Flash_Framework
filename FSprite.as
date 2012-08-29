@@ -5,6 +5,9 @@ package Framework
 
 	import Framework.Maths.FVec;
 
+	import Framework.Shapes.FShape;
+	import Framework.Shapes.FRect;
+
 	public class FSprite extends FObject
 	{
 		// Movement variables
@@ -16,7 +19,8 @@ package Framework
 		public var minSpeed:FVec;
 		public var topSpeed:FVec;
 
-		
+		// Collision variables
+		public var collision:FShape;
 
 		// Get half widths for positioning
 		public function get halfHeight():Number { return height/2; }
@@ -41,6 +45,7 @@ package Framework
 			maxSpeed = new FVec();
 			minSpeed = new FVec();
 			topSpeed = new FVec();
+			collision = new FRect(x, y, width, height);
 		}
 
 		override public function Destroy():void
@@ -64,6 +69,9 @@ package Framework
 			y += velocity.y;
 
 			rotation += spin * FG.dt;
+
+			collision.x = x;
+			collision.y = y;
 		}
 
 		// Snagged from Flixel.

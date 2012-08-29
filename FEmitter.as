@@ -44,6 +44,7 @@ package Framework
 			minSpeed	= new FVec();
 			topSpeed	= new FVec();
 			drag		= new FVec();
+			acceleration = new FVec();
 
 			super(maxSize);
 			
@@ -63,7 +64,7 @@ package Framework
 			SetXSpeed();	// Defaults to -25, 25
 			SetYSpeed();	// Defaults to -25, 25
 			SetTopSpeed();
-			acceleration = new FVec(0, 50);
+			SetAcceleration();
 			SetDrag();
 			maxRotation = 360;
 			minRotation = -360;
@@ -226,6 +227,7 @@ package Framework
 
 		public function SetSize(W:uint = 1, H:uint = 1):void { Width = W; Height = H; }
 		public function SetDrag(X:uint = 15, Y:uint = 0):void { drag.x = X; drag.y = Y; }
+		public function SetAcceleration(X:uint = 0, Y:uint = 50):void { acceleration.x = X; acceleration.y = Y; }
 		public function SetTopSpeed(maxX:int = 25, maxY:int = 25):void { topSpeed.x = maxX; topSpeed.y = maxY; }
 		public function SetXSpeed(min:int = -25, max:int = 25):void { minSpeed.x = min; maxSpeed.x = max; }
 		public function SetYSpeed(min:int = -25, max:int = 25):void { minSpeed.y = min; maxSpeed.y = max; }

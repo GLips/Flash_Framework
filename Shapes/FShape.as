@@ -3,14 +3,12 @@ package Framework.Shapes
 
 	import Framework.Maths.FPoint;
 
-	public class FShape
+	public class FShape extends FPoint
 	{
 
-		public var p:FPoint;
-
-		public function FShape(X:int, Y:int = 0)
+		public function FShape(X:int = 0, Y:int = 0)
 		{
-			p = new FPoint(X, Y);
+			super(X, Y);
 		}
 	}
 }

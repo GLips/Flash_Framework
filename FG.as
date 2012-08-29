@@ -87,6 +87,18 @@ package Framework
 				return FG._game.stage;
 			return null;
 		}
+
+		// Takes two groups (or just sprites) of different shapes and collides them, calling onCollide when collisions happen
+		/*public static function Collide(g1:FObject, g2:FObject, onCollide:Function):void
+		{
+			for(var i:int = g1.length - 1; i >= 0; i--)
+			{
+				if(members[i] != null)
+				{
+					Remove(members[i]).Destroy();
+				}
+			}
+		}*/
 	}
 
 }
