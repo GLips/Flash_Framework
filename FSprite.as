@@ -38,6 +38,8 @@ package Framework
 
 		override public function Create():void
 		{
+			super.Create();
+			
 			velocity = new FVec();
 			spin = 0;
 			acceleration = new FVec();
@@ -72,6 +74,13 @@ package Framework
 
 			collision.x = x;
 			collision.y = y;
+		}
+
+		override public function Reset(X:int = 0, Y:int = 0):void
+		{
+			super.Reset(X, Y);
+
+			timeLived = 0;
 		}
 
 		// Snagged from Flixel.

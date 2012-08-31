@@ -12,6 +12,9 @@ package Framework
 		public var exists:Boolean;			// True
 		public var alive:Boolean;			// True
 
+		// How long the obj has lived
+		public var timeLived:Number;
+
 		public function FObject()
 		{
 			super();
@@ -24,6 +27,7 @@ package Framework
 		public function Create():void
 		{
 			// Called on creation automatically
+			timeLived = 0;
 		}
 
 		public function Destroy():void
@@ -34,6 +38,7 @@ package Framework
 		public function Update():void
 		{
 			// Called every frame if thinks == true;
+			timeLived += FG.dt;
 		}
 
 		public function Draw():void

@@ -9,7 +9,11 @@ package Framework
 	public class FParticle extends FSprite
 	{
 		// Time left before death
-		public var lifetime:Number;
+		public var timeLeft:Number;
+		// Total time particle will have lived by the end
+		public var _lifetime:Number;
+		public function get lifetime():Number { return _lifetime; }
+		public function set lifetime(x:Number):void { _lifetime = timeLeft = x; }
 
 		// Rendering function
 		public var drawFunc:Function;
@@ -36,7 +40,7 @@ package Framework
 		{
 			super.Create();
 
-			lifetime = 1;
+			timeLeft = lifetime = 1;
 		}
 
 		override public function Update():void
@@ -44,8 +48,8 @@ package Framework
 			super.Update();
 
 			// Time to die?
-			lifetime -= FG.dt;
-			if(lifetime <= 0)
+			timeLeft -= FG.dt;
+			if(timeLeft <= 0)
 				Kill();
 		}
 

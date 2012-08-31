@@ -90,7 +90,7 @@ package Framework.GUI
 			field.textColor = textColor;
 			//field.border = false;		// Redundant
 			field.autoSize = textAlign;
-			field.multiline = false;
+			field.multiline = true;
 			field.wordWrap = false;
 
 			addChild(field);

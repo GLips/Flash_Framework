@@ -14,6 +14,8 @@ package Framework
 	{
 
 		// Scene
+		protected var sceneMask:Sprite;
+		public var useMask:Boolean;
 		protected var scene:FScene;
 		public var _requestedScene:FScene
 
@@ -23,6 +25,8 @@ package Framework
 
 			FG._scene = scene = new s();
 			_requestedScene = scene;
+
+			useMask = true;
 
 			addChild(scene);
 
@@ -35,6 +39,7 @@ package Framework
 			removeEventListener(Event.ENTER_FRAME, Create);
 
 			stage.scaleMode = StageScaleMode.NO_SCALE;
+			InitScene();
 
 			// Necessary to have the proper delta time value on first scene update call
 			FG.UpdateTime();
@@ -50,6 +55,23 @@ package Framework
 
 			// Think/draw hook
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+		}
+
+		// Only called outside of this class if you want to modify the default parameters
+		public function InitScene():void
+		{
+			if(useMask)
+			{
+				sceneMask = new Sprite();
+				sceneMask.graphics.beginFill(0);
+				sceneMask.graphics.drawRect(0, 0, FG.width, FG.height);
+				sceneMask.graphics.endFill();
+				
+				// Gotta be on the stage to respond to Flash player resizing
+				addChild(sceneMask);
+
+				scene.mask = sceneMask;
+			}
 		}
 
 		// The top level game loop
@@ -78,6 +100,7 @@ package Framework
 			scene = _requestedScene;
 			FG._scene = scene;
 			addChild(scene);
+			InitScene();
 		}
 
 		// Pass events mouse object

@@ -113,6 +113,8 @@ package Framework
 
 		override public function Update():void
 		{
+			super.Update();
+			
 			if(!paused && thinks)
 			{
 				for each(var o:FObject in members)

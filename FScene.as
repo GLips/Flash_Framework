@@ -15,6 +15,8 @@ package Framework
 
 		override public function Create():void
 		{
+			super.Create();
+			
 			FG._scene = this;
 
 			zone_BG = new FGroup();
