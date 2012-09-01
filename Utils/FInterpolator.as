@@ -50,9 +50,32 @@ package Framework.Utils
 
 		}
 
-		public function SetValue(location:Number, value:Number):void
+		public function AddValue(location:Number, value:Number):void
 		{
+			// Get a value between 0 and 1
+			location = FMath.Clamp(location);
 
+			var newPoint:FPoint = new FPoint(location, value);
+			var p1:FPoint;
+
+			// Find the two values on either side of the given location
+			for(x = 0; x < pointHolder.length; x++)
+			{
+				p1 = pointHolder[x];
+
+				// Replace the old value if we're on a point that has been defined
+				if(p1.x == location)
+				{
+					p1.y = value;
+					return;
+				}
+
+				if(p1.x > location)
+				{
+					pointHolder.splice(x, 0, newPoint);
+					break;
+				}
+			}
 		}
 
 		public function GetValue(location:Number):Number
