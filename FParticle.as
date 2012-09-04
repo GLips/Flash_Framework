@@ -72,7 +72,7 @@ package Framework
 
 		/**********************
 		*
-		* BEGIN PRIVATE FUNCTIONS
+		* PRIVATE FUNCTIONS
 		*
 		**********************/
 		private function defaultDraw():void
