@@ -82,7 +82,7 @@ package Framework.Utils
 			// Find the two values on either side of the given location
 			var nearPoints:Array = getNearestPointIndices(location);
 			var rightIndex:int = nearPoints[1];
-			
+
 			// Right and left will be the same if you're on a point so you could check either
 			if(pointHolder[rightIndex].x == location)
 				pointHolder[rightIndex].y = value;
@@ -154,7 +154,48 @@ package Framework.Utils
 		* PRIVATE FUNCTIONS
 		*
 		**********************/
+		// Why return indices instead of points themselves?
 		private function getNearestPointIndices(location:Number, numToGet:Number = 2):Array
+		{
+			var p:FPoint;
+
+			// Find the two values on either side of the given location
+			for(x = 0; x < pointHolder.length; x++)
+			{
+				p = pointHolder[x];
+
+				// If we're on a pre-defined point, return the point itself
+				if(p.x == location)
+					return new Array(x, x);
+
+				// Value just became greater than that of our loc, we have our outer bound
+				if(p.x > location)
+					break;
+			}
+
+			var ret:Array = new Array();
+			
+			for(var i:int = -numToGet/2; i < numToGet/2; i++)
+			{
+				// At the beginning, we have to make up a point to send
+				/*
+				if(i + x < 0)
+				{
+
+				}
+				else if(i + x >= pointHolder.length)
+				{
+					// Derp.
+				}
+				else
+				{
+				*/
+					ret.push((i+x + pointHolder.length) % pointHolder.length);
+				//}
+			}
+			return ret;
+		}
+		private function getNearestPoints(location:Number, numToGet:Number = 2):Array
 		{	
 			var p:FPoint;
 
@@ -175,7 +216,23 @@ package Framework.Utils
 			var ret:Array = new Array();
 			
 			for(var i:int = -numToGet/2; i < numToGet/2; i++)
-				ret.push(i+x);
+			{
+				// At the beginning, we have to make up a point to send
+				/*
+				if(i + x < 0)
+				{
+
+				}
+				else if(i + x >= pointHolder.length)
+				{
+					// Derp.
+				}
+				else
+				{
+				*/
+					ret.push(pointHolder[(i+x + pointHolder.length) % pointHolder.length]);
+				//}
+			}
 
 			return ret;
 		}
@@ -184,28 +241,31 @@ package Framework.Utils
 		// Begin interpolation functions
 		private function linear(location:Number):Number
 		{
-			var a:Array = getNearestPointIndices(location);
+			var a:Array = getNearestPoints(location);
 
-			var p1:FPoint = pointHolder[a[0]];
-			var p2:FPoint = pointHolder[a[1]];
+			var p1:FPoint = a[0];
+			var p2:FPoint = a[1];
 
 			return p1.y + (p2.y - p1.y) * (location - p1.x)/(p2.x - p1.x);
 		}
 
-        // See http://www.mvps.org/directx/articles/catmull/
-        private function spline (p0:FPoint, p1:FPoint, p2:FPoint, p3:FPoint, t:Number = 1.0):FPoint 
-        {
-			return new FPoint (
-				// Matrix math that I don't fully understand
-				0.5 * ((2 * p1.x) +
-					t * (( -p0.x           +p2.x) +
-					t * ((2*p0.x -5*p1.x +4*p2.x -p3.x) +
-					t * (  -p0.x +3*p1.x -3*p2.x +p3.x)))),
-				0.5 * ((          2*p1.y) +
+		// See http://www.mvps.org/directx/articles/catmull/
+		private function spline (location:Number):Number 
+		{
+			var a:Array = getNearestPoints(location, 4);
+
+			var p0:FPoint = a[0];
+			var p1:FPoint = a[1];
+			var p2:FPoint = a[2];
+			var p3:FPoint = a[3];
+
+			var t:Number = (location - p1.x) / (p2.x - p1.x);
+
+			// Matrix math that I don't fully understand
+			return 0.5 * (( 2 * p1.y) +
 					t * (( -p0.y + p2.y) +
 					t * ((2*p0.y -5*p1.y +4*p2.y -p3.y) +
 					t * (  -p0.y +3*p1.y -3*p2.y +p3.y))))
-			);
 		}
 	}
 }
