@@ -1,3 +1,6 @@
+// Courtesy of http://gizma.com/easing/
+// Robert Penner
+
 package Framework.Maths
 {
 	public class FEasing
@@ -124,5 +127,164 @@ package Framework.Maths
 			loc -= 2;
 			return end/2 * (Math.sqrt(1 - loc*loc) + 1) + start;
 		}
+		
+		public static function ElasticIn(loc:Number, start:Number, end:Number):Number
+		{
+			var s:Number = 1.70158;
+			var p:Number = 0.3;
+			var a:Number = end;
+
+			if (loc == 0)
+				return start;
+			
+			if (loc == 1)
+				return start+end;
+			
+			if (a < Math.abs(end))
+			{
+				a = end;
+				s = p/4;
+			}
+			else
+			{
+				s = p/(2*Math.PI) * Math.asin (end/a);
+			}
+
+			return -(a*Math.pow(2,10*(loc-=1)) * Math.sin( (loc-s)*(2*Math.PI)/p )) + start;
+		}
+
+		public static function ElasticOut(loc:Number, start:Number, end:Number):Number
+		{
+			var s:Number = 1.70158;
+			var p:Number = 0.3;
+			var a:Number = end;
+
+			if (loc == 0)
+				return start;
+			if (loc == 1)
+				return start+end;
+
+			if (a < Math.abs(end))
+			{
+				a = end;
+				s = p/4;
+			}
+			else 
+			{
+				s = p/(2*Math.PI) * Math.asin (end/a);
+			}
+			return a*Math.pow(2,-10*loc) * Math.sin( (loc-s)*(2*Math.PI)/p ) + end + start;
+		}
+
+		public static function ElasticInOut(loc:Number, start:Number, end:Number):Number
+		{
+			var s:Number = 1.70158;
+			var p:Number = 0.45;
+			var a:Number = end;
+
+			loc *= 2;
+
+			if (loc == 0)
+				return start;
+			if (loc == 2)
+				return start+end;
+			if (a < Math.abs(end))
+			{
+				a = end;
+				s = p/4;
+			}
+			else
+			{
+				s = p/(2*Math.PI) * Math.asin (end/a);
+			}
+
+			if (loc < 1)
+			{
+				return -.5*(a*Math.pow(2,10*(loc-=1)) * Math.sin( (loc-s)*(2*Math.PI)/p )) + start;
+			}
+			
+			return a*Math.pow(2,-10*(loc-=1)) * Math.sin( (loc-s)*(2*Math.PI)/p )*.5 + end + start;
+		}
+
+		// c = end
+		// t/d = loc
+		// b = start
+
+		
+		public static function BackIn(loc:Number, start:Number, end:Number):Number
+		{
+			var s:Number = 1.70158;
+			return end*loc*loc*((s+1)*loc - s) + start;
+		}
+
+		public static function BackOut(loc:Number, start:Number, end:Number):Number
+		{
+			var s:Number = 1.70158;
+			return end*(loc*loc*((s+1)*loc + s) + 1) + start;
+		}
+
+		public static function BackInOut(loc:Number, start:Number, end:Number):Number
+		{
+			var s:Number = 2.5949095;
+			
+			loc *= 2;
+
+			if (loc < 1)
+				return end/2*(loc*loc*((s+1)*loc - s)) + start;
+
+			return end/2*((loc-=2)*loc*((s+1)*loc + s) + 2) + start;
+		}
+		
+		public static function BounceIn(loc:Number, start:Number, end:Number):Number
+		{
+			/*loc = 1 - loc;
+			if (loc < B1) return 1 - 7.5625 * loc * loc;
+			if (loc < B2) return 1 - (7.5625 * (loc - B3) * (loc - B3) + .75);
+			if (loc < B4) return 1 - (7.5625 * (loc - B5) * (loc - B5) + .9375);
+			return 1 - (7.5625 * (loc - B6) * (loc - B6) + .984375);*/
+			loc = 1 - loc;
+			if (loc < B1) return end * (1 - 7.5625 * loc * loc) + start;
+			if (loc < B2) return end * (1 - (7.5625 * (loc - B3) * (loc - B3) + .75)) + start;
+			if (loc < B4) return end * (1 - (7.5625 * (loc - B5) * (loc - B5) + .9375)) + start;
+			return end * (1 - (7.5625 * (loc - B6) * (loc - B6) + .984375)) + start;
+		}
+
+		public static function BounceOut(loc:Number, start:Number, end:Number):Number
+		{
+			if (loc < B1) return end * (7.5625 * loc * loc) + start;
+			if (loc < B2) return end * (7.5625 * (loc - B3) * (loc - B3) + .75) + start;
+			if (loc < B4) return end * (7.5625 * (loc - B5) * (loc - B5) + .9375) + start;
+			return end * (7.5625 * (loc - B6) * (loc - B6) + .984375) + start;
+		}
+
+		public static function BounceInOut(loc:Number, start:Number, end:Number):Number
+		{
+			if (loc < .5)
+			{
+				loc = 1 - loc * 2;
+				if (loc < B1) return (1 - 7.5625 * loc * loc) / 2;
+				if (loc < B2) return (1 - (7.5625 * (loc - B3) * (loc - B3) + .75)) / 2;
+				if (loc < B4) return (1 - (7.5625 * (loc - B5) * (loc - B5) + .9375)) / 2;
+				return (1 - (7.5625 * (loc - B6) * (loc - B6) + .984375)) / 2;
+			}
+			loc = loc * 2 - 1;
+			if (loc < B1) return (7.5625 * loc * loc) / 2 + .5;
+			if (loc < B2) return (7.5625 * (loc - B3) * (loc - B3) + .75) / 2 + .5;
+			if (loc < B4) return (7.5625 * (loc - B5) * (loc - B5) + .9375) / 2 + .5;
+			return (7.5625 * (loc - B6) * (loc - B6) + .984375) / 2 + .5;
+		}
+
+		// Easing constants.
+		private static const PI:Number = Math.PI;
+		private static const PI2:Number = Math.PI / 2;
+		private static const EL:Number = 2 * PI / .45;
+		private static const B1:Number = 1 / 2.75;
+		private static const B2:Number = 2 / 2.75;
+		private static const B3:Number = 1.5 / 2.75;
+		private static const B4:Number = 2.5 / 2.75;
+		private static const B5:Number = 2.25 / 2.75;
+		private static const B6:Number = 2.625 / 2.75;
+		
+
 	}
 }
