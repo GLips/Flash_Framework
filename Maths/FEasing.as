@@ -262,16 +262,16 @@ package Framework.Maths
 			if (loc < .5)
 			{
 				loc = 1 - loc * 2;
-				if (loc < B1) return (1 - 7.5625 * loc * loc) / 2;
-				if (loc < B2) return (1 - (7.5625 * (loc - B3) * (loc - B3) + .75)) / 2;
-				if (loc < B4) return (1 - (7.5625 * (loc - B5) * (loc - B5) + .9375)) / 2;
-				return (1 - (7.5625 * (loc - B6) * (loc - B6) + .984375)) / 2;
+				if (loc < B1) return end * ((1 - 7.5625 * loc * loc) / 2) + start;
+				if (loc < B2) return end * ((1 - (7.5625 * (loc - B3) * (loc - B3) + .75)) / 2) + start;
+				if (loc < B4) return end * ((1 - (7.5625 * (loc - B5) * (loc - B5) + .9375)) / 2) + start;
+				return end * ((1 - (7.5625 * (loc - B6) * (loc - B6) + .984375)) / 2) + start;
 			}
 			loc = loc * 2 - 1;
-			if (loc < B1) return (7.5625 * loc * loc) / 2 + .5;
-			if (loc < B2) return (7.5625 * (loc - B3) * (loc - B3) + .75) / 2 + .5;
-			if (loc < B4) return (7.5625 * (loc - B5) * (loc - B5) + .9375) / 2 + .5;
-			return (7.5625 * (loc - B6) * (loc - B6) + .984375) / 2 + .5;
+			if (loc < B1) return end * ((7.5625 * loc * loc) / 2 + .5) + start;
+			if (loc < B2) return end * ((7.5625 * (loc - B3) * (loc - B3) + .75) / 2 + .5) + start;
+			if (loc < B4) return end * ((7.5625 * (loc - B5) * (loc - B5) + .9375) / 2 + .5) + start;
+			return end * ((7.5625 * (loc - B6) * (loc - B6) + .984375) / 2 + .5) + start;
 		}
 
 		// Easing constants.
