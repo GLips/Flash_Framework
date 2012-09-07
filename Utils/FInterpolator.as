@@ -177,61 +177,19 @@ package Framework.Utils
 			
 			for(var i:int = -numToGet/2; i < numToGet/2; i++)
 			{
-				// At the beginning, we have to make up a point to send
-				/*
-				if(i + x < 0)
-				{
-
-				}
-				else if(i + x >= pointHolder.length)
-				{
-					// Derp.
-				}
-				else
-				{
-				*/
-					ret.push((i+x + pointHolder.length) % pointHolder.length);
-				//}
+				ret.push((i+x + pointHolder.length) % pointHolder.length);
 			}
 			return ret;
 		}
 		private function getNearestPoints(location:Number, numToGet:Number = 2):Array
 		{	
-			var p:FPoint;
-
-			// Find the two values on either side of the given location
-			for(x = 0; x < pointHolder.length; x++)
-			{
-				p = pointHolder[x];
-
-				// If we're on a pre-defined point, return the point itself
-				if(p.x == location)
-					return new Array(x, x);
-
-				// Value just became greater than that of our loc, we have our outer bound
-				if(p.x > location)
-					break;
-			}
+			var a:Array = getNearestPointIndices(location, numToGet);
 
 			var ret:Array = new Array();
 			
-			for(var i:int = -numToGet/2; i < numToGet/2; i++)
+			for(var i:int = 0; i < a.length; i++)
 			{
-				// At the beginning, we have to make up a point to send
-				/*
-				if(i + x < 0)
-				{
-
-				}
-				else if(i + x >= pointHolder.length)
-				{
-					// Derp.
-				}
-				else
-				{
-				*/
-					ret.push(pointHolder[(i+x + pointHolder.length) % pointHolder.length]);
-				//}
+				ret.push(pointHolder[a[i]]);
 			}
 
 			return ret;
