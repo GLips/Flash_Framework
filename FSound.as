@@ -15,6 +15,9 @@ package Framework
 
 		private var musicChannel:SoundChannel;
 
+		private var _muted:Boolean;
+		public function get muted():Boolean { return _muted; }
+		public function set muted(m:Boolean):void { _muted = m; if(m == true){ Stop(); } }
 
 		/**********************
 		*
@@ -23,6 +26,7 @@ package Framework
 		**********************/
 		public function FSound()
 		{
+			_muted = false;
 		}
 
 		/**********************
@@ -37,7 +41,8 @@ package Framework
 
 		public function Play(snd:Sound):void
 		{
-			channel1 = snd.play();
+			if(!_muted)
+				channel1 = snd.play();
 		}
 
 		public function Stop():void

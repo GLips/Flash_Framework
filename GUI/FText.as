@@ -66,13 +66,14 @@ package Framework.GUI
 			tFormat = null;
 		}
 
-		public function UpdateText(s:String):void
+		public function UpdateText(s:String):FText
 		{
 			label = s;
 			field.text = s;
+			return this;
 		}
 
-		public function UpdateFormat():void
+		public function UpdateFormat():FText
 		{
 			tFormat = new TextFormat();
 			tFormat.size = size;
@@ -95,6 +96,7 @@ package Framework.GUI
 
 			addChild(field);
 			staged = true;
+			return this;
 		}
 
 		public function CenterText():FText

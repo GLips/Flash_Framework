@@ -70,9 +70,14 @@ package Framework
 			FG.lastTime = curTime;
 		}
 
-		public static function SwitchScene(s:FScene, transition:int = 0):void
+		public static function SwitchScene(s:FScene, transitionFunc:Function = null, time:Number = 0):void
 		{
-			_game._requestedScene = s;
+			if(!_game.switchingScene)
+			{
+				_game._requestedScene = s;
+				_game.transitionFunc = transitionFunc;
+				_game.transitionTimeLeft = _game.transitionTime = time;
+			}
 		}
 
 		// Return game's framerate

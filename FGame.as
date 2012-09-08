@@ -18,6 +18,10 @@ package Framework
 		public var useMask:Boolean;
 		protected var scene:FScene;
 		public var _requestedScene:FScene
+		public var switchingScene:Boolean;
+		public var transitionFunc:Function;
+		public var transitionTime:Number;
+		public var transitionTimeLeft:Number;
 
 		public function FGame(g:FGame, w:int, h:int, s:Class):void
 		{
@@ -25,8 +29,6 @@ package Framework
 
 			FG._scene = scene = new s();
 			_requestedScene = scene;
-
-			useMask = true;
 
 			addChild(scene);
 
@@ -39,6 +41,9 @@ package Framework
 			removeEventListener(Event.ENTER_FRAME, Create);
 
 			stage.scaleMode = StageScaleMode.NO_SCALE;
+
+			switchingScene = false;
+			useMask = true;
 			InitScene();
 
 			// Necessary to have the proper delta time value on first scene update call
@@ -82,8 +87,10 @@ package Framework
 			FG.mouse.Update();
 
 			// Switch scene
-			if(scene != _requestedScene)
+			if(scene != _requestedScene && !switchingScene)
 				SwitchScene();
+			if(switchingScene)
+				AnimateScene();
 
 			// Do game logic
 			scene.Update();
@@ -95,12 +102,41 @@ package Framework
 		// Change active scene being run in the game loop
 		protected function SwitchScene():void
 		{
-			scene.Destroy();
-			removeChild(scene);
-			scene = _requestedScene;
-			FG._scene = scene;
-			addChild(scene);
-			InitScene();
+			if(transitionTimeLeft > 0)
+			{
+				switchingScene = true;
+				addChild(_requestedScene);
+				_requestedScene.thinks = false;
+			}
+			else
+			{
+				if(switchingScene)
+				{
+					removeChild(_requestedScene);
+					_requestedScene.thinks = true;
+				}
+				scene.Destroy();
+				removeChild(scene);
+				scene = _requestedScene;
+				FG._scene = scene;
+				addChild(scene);
+				InitScene();
+				switchingScene = false;
+			}
+		}
+
+		protected function AnimateScene():void
+		{
+			transitionTimeLeft -= FG.dt;
+
+			if(transitionTimeLeft + FG.dt == 0)
+				SwitchScene();
+
+			// Guarantee we get to the exact end point of our transition time
+			if(transitionTimeLeft < 0)
+				transitionTimeLeft = 0;
+
+			transitionFunc(scene, _requestedScene, transitionTimeLeft / transitionTime);
 		}
 
 		// Pass events mouse object
