@@ -37,6 +37,8 @@ package Framework.GUI.Buttons
 			
 			label.x = Width/2;
 			label.y = Height/2;
+
+			collision = new FRect(x, y, Width, Height);
 		}
 
 		override public function Draw():void

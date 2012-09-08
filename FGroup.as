@@ -129,10 +129,13 @@ package Framework
 
 		override public function Draw():void
 		{
-			for each(var o:FObject in members)
+			if(!paused)
 			{
-				if(o != null && o.draws && o.exists)
-					o.Draw();
+				for each(var o:FObject in members)
+				{
+					if(o != null && o.draws && o.exists)
+						o.Draw();
+				}
 			}
 		}
 

@@ -106,14 +106,14 @@ package Framework
 			{
 				switchingScene = true;
 				addChild(_requestedScene);
-				_requestedScene.thinks = false;
+				_requestedScene.paused = true;
 			}
 			else
 			{
 				if(switchingScene)
 				{
 					removeChild(_requestedScene);
-					_requestedScene.thinks = true;
+					_requestedScene.paused = false;
 				}
 				scene.Destroy();
 				removeChild(scene);
@@ -135,6 +135,10 @@ package Framework
 			// Guarantee we get to the exact end point of our transition time
 			if(transitionTimeLeft < 0)
 				transitionTimeLeft = 0;
+
+			// Paused by default, but can be switched on manually
+			_requestedScene.Update();
+			_requestedScene.Draw();
 
 			transitionFunc(scene, _requestedScene, transitionTimeLeft / transitionTime);
 		}

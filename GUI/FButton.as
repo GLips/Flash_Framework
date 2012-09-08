@@ -65,6 +65,8 @@ package Framework.GUI
 		********************************/
 		override public function Create():void
 		{
+			super.Create(); 
+			
 			styles = new Array();
 			state = NORMAL;
 
@@ -172,7 +174,7 @@ package Framework.GUI
 
 		protected function doHitTest():Boolean
 		{
-			return FCollide.PointInRect(pointToCheck, new FRect(x, y, width, height));
+			return FCollide.PointInRect(pointToCheck, (collision as FRect));
 		}
 	}
 

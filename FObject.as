@@ -7,7 +7,7 @@ package Framework
 
 		public var thinks:Boolean;			// True
 		public var draws:Boolean;			// False
-		protected var paused:Boolean;		// False
+		public var paused:Boolean;		// False
 
 		public var exists:Boolean;			// True
 		public var alive:Boolean;			// True
