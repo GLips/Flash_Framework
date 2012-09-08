@@ -102,7 +102,7 @@ package Framework
 		// Change active scene being run in the game loop
 		protected function SwitchScene():void
 		{
-			if(transitionTimeLeft > 0)
+			if(transitionTimeLeft > 0 && transitionFunc != null)
 			{
 				switchingScene = true;
 				addChild(_requestedScene);
@@ -129,7 +129,7 @@ package Framework
 		{
 			transitionTimeLeft -= FG.dt;
 
-			if(transitionTimeLeft + FG.dt == 0)
+			if(transitionTimeLeft + FG.dt == 0 || transitionFunc == null)
 				SwitchScene();
 
 			// Guarantee we get to the exact end point of our transition time

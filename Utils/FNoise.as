@@ -1,138 +1,192 @@
-/**
-Title:			Perlin noise
-Version:		1.2
-Author:			Ron Valstar
-Author URI:		http://www.sjeiti.com/
-Original code port from http://mrl.nyu.edu/~perlin/noise/
-and some help from http://freespace.virgin.net/hugo.elias/models/m_perlin.htm
-Park Miller random number implemetation used from Michael Baczynski (www.polygonal.de)
-*/
-package Framework.Utils {
+/*
+ * A speed-improved simplex noise algorithm for 2D, 3D and 4D in Java.
+ *
+ * Based on example code by Stefan Gustavson (stegu@itn.liu.se).
+ * Optimisations by Peter Eastman (peastman@drizzle.stanford.edu).
+ * Better rank ordering method by Stefan Gustavson in 2012.
+ *
+ * This could be speeded up even further, but it's useful as it is.
+ *
+ * Version 2012-03-09
+ *
+ * This code was placed in the public domain by its original author,
+ * Stefan Gustavson. You may use it as you see fit, but
+ * attribution is appreciated.
+ *
+ */
+package Framework.Utils
+{
+	public class FNoise
+	{  // Simplex noise in 2D, 3D and 4D
+		private static var grad3:Array = new Array (new Array(1,1,0),new Array(-1,1,0),new Array(1,-1,0),new Array(-1,-1,0),
+		                             new Array(1,0,1),new Array(-1,0,1),new Array(1,0,-1),new Array(-1,0,-1),
+		                             new Array(0,1,1),new Array(0,-1,1),new Array(0,1,-1),new Array(0,-1,-1));
 
-	import Framework.Utils.PM_PRNG;
+		private static var perm:Array = new Array(151,160,137,91,90,15,
+		131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,
+		190, 6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,
+		88,237,149,56,87,174,20,125,136,171,168, 68,175,74,165,71,134,139,48,27,166,
+		77,146,158,231,83,111,229,122,60,211,133,230,220,105,92,41,55,46,245,40,244,
+		102,143,54, 65,25,63,161, 1,216,80,73,209,76,132,187,208, 89,18,169,200,196,
+		135,130,116,188,159,86,164,100,109,198,173,186, 3,64,52,217,226,250,124,123,
+		5,202,38,147,118,126,255,82,85,212,207,206,59,227,47,16,58,17,182,189,28,42,
+		223,183,170,213,119,248,152, 2,44,154,163, 70,221,153,101,155,167, 43,172,9,
+		129,22,39,253, 19,98,108,110,79,113,224,232,178,185, 112,104,218,246,97,228,
+		251,34,242,193,238,210,144,12,191,179,162,241, 81,51,145,235,249,14,239,107,
+		49,192,214, 31,181,199,106,157,184, 84,204,176,115,121,50,45,127, 4,150,254,
+		138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180,
+		// Doubled so there's no need for index wrapping
+		151,160,137,91,90,15,
+		131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,
+		190, 6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,
+		88,237,149,56,87,174,20,125,136,171,168, 68,175,74,165,71,134,139,48,27,166,
+		77,146,158,231,83,111,229,122,60,211,133,230,220,105,92,41,55,46,245,40,244,
+		102,143,54, 65,25,63,161, 1,216,80,73,209,76,132,187,208, 89,18,169,200,196,
+		135,130,116,188,159,86,164,100,109,198,173,186, 3,64,52,217,226,250,124,123,
+		5,202,38,147,118,126,255,82,85,212,207,206,59,227,47,16,58,17,182,189,28,42,
+		223,183,170,213,119,248,152, 2,44,154,163, 70,221,153,101,155,167, 43,172,9,
+		129,22,39,253, 19,98,108,110,79,113,224,232,178,185, 112,104,218,246,97,228,
+		251,34,242,193,238,210,144,12,191,179,162,241, 81,51,145,235,249,14,239,107,
+		49,192,214, 31,181,199,106,157,184, 84,204,176,115,121,50,45,127, 4,150,254,
+		138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180);
 
-	public class FNoise {
-		private static var bInit:Boolean = false;
-		//
-		private static var p:Array = [151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,190,6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,88,237,149,56,87,174,20,125,136,171,168,68,175,74,165,71,134,139,48,27,166,77,146,158,231,83,111,229,122,60,211,133,230,220,105,92,41,55,46,245,40,244,102,143,54,65,25,63,161,1,216,80,73,209,76,132,187,208,89,18,169,200,196,135,130,116,188,159,86,164,100,109,198,173,186,3,64,52,217,226,250,124,123,5,202,38,147,118,126,255,82,85,212,207,206,59,227,47,16,58,17,182,189,28,42,223,183,170,213,119,248,152,2,44,154,163,70,221,153,101,155,167,43,172,9,129,22,39,253,19,98,108,110,79,113,224,232,178,185,112,104,218,246,97,228,251,34,242,193,238,210,144,12,191,179,162,241,81,51,145,235,249,14,239,107,49,192,214,31,181,199,106,157,184,84,204,176,115,121,50,45,127,4,150,254,138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180,151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,190,6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,88,237,149,56,87,174,20,125,136,171,168,68,175,74,165,71,134,139,48,27,166,77,146,158,231,83,111,229,122,60,211,133,230,220,105,92,41,55,46,245,40,244,102,143,54,65,25,63,161,1,216,80,73,209,76,132,187,208,89,18,169,200,196,135,130,116,188,159,86,164,100,109,198,173,186,3,64,52,217,226,250,124,123,5,202,38,147,118,126,255,82,85,212,207,206,59,227,47,16,58,17,182,189,28,42,223,183,170,213,119,248,152,2,44,154,163,70,221,153,101,155,167,43,172,9,129,22,39,253,19,98,108,110,79,113,224,232,178,185,112,104,218,246,97,228,251,34,242,193,238,210,144,12,191,179,162,241,81,51,145,235,249,14,239,107,49,192,214,31,181,199,106,157,184,84,204,176,115,121,50,45,127,4,150,254,138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180];
-		private static var iOctaves:int = 4;
-		private static var fPersistence:Number = .5;
-		//
-		private static var aOctFreq:Array; // frequency per octave
-		private static var aOctPers:Array; // persistence per octave
-		private static var fPersMax:Number;// 1 / max persistence
-		//
-		private static var iSeed:int = 123;
-		private static var oRand:PM_PRNG;
-		//
-		private static var iXoffset:Number;
-		private static var iYoffset:Number;
-		private static var iZoffset:Number;
-		//
-		// PUBLIC
-		public static function noise(x:Number, y:Number=1, z:Number=1):Number {
-			if (!bInit) init();
-			var s:Number = 0;
-			for (var i:int;i<iOctaves;i++) {
-				var fFreq:Number = aOctFreq[i];
-				var fPers:Number = aOctPers[i];
-				s += n((x+iXoffset)*fFreq,(y+iYoffset)*fFreq,(z+iZoffset)*fFreq) * fPers;
+		// Skewing and unskewing factors for 2, 3, and 4 dimensions
+		private static const F3:Number = 1.0/3.0;
+		private static const G3:Number = 1.0/6.0;
+
+		// This method is a *lot* faster than using (int)Math.floor(x)
+		private static function fastfloor(x:Number):int
+		{
+			var xi:int = int(x);
+			return x < xi ? xi-1 : xi;
+		}
+
+		private static function dot(g:Array, x:Number, y:Number, z:Number):Number
+		{
+			return g[0]*x + g[1]*y + g[2]*z;
+		}
+
+		// 3D simplex noise
+		public static function noise(xin:Number, yin:Number = 1, zin:Number = 1):Number
+		{
+			// Hack to keep values from hitting whole numbers. Stuff messes up there.
+			if(xin % 1 == 0)
+				xin += 0.01;
+			if(yin % 1 == 0)
+				yin += 0.01;
+			if(zin % 1 == 0)
+				zin += 0.01;
+			// Noise contributions from the four corners
+			var n0:Number, n1:Number, n2:Number, n3:Number;
+
+			// Skew the input space to determine which simplex cell we're in
+			var s:Number = (xin+yin+zin)*F3; // Very nice and simple skew factor for 3D
+
+			var i:int = fastfloor(xin+s);
+			var j:int = fastfloor(yin+s);
+			var k:int = fastfloor(zin+s);
+
+			var t:Number = (i+j+k)*G3;
+			var X0:Number = i-t; // Unskew the cell origin back to (x,y,z) space
+			var Y0:Number = j-t;
+			var Z0:Number = k-t;
+			var x0:Number = xin-X0; // The x,y,z distances from the cell origin
+			var y0:Number = yin-Y0;
+			var z0:Number = zin-Z0;
+
+			// For the 3D case, the simplex shape is a slightly irregular tetrahedron.
+
+			// Determine which simplex we are in.
+			var i1:int, j1:int, k1:int; // Offsets for second corner of simplex in (i,j,k) coords
+			var i2:int, j2:int, k2:int; // Offsets for third corner of simplex in (i,j,k) coords
+			if(x0 >= y0)
+			{
+				if(y0 >= z0) 
+					{ i1=1; j1=0; k1=0; i2=1; j2=1; k2=0; } // X Y Z order
+				else if(x0 >= z0)
+					{ i1=1; j1=0; k1=0; i2=1; j2=0; k2=1; } // X Z Y order
+				else
+					{ i1=0; j1=0; k1=1; i2=1; j2=0; k2=1; } // Z X Y order
 			}
-			return (s*fPersMax+1)*.5;
-		}
-		// GETTER / SETTER
-		//
-		// get octaves
-		public static function get octaves():int {
-			return iOctaves;
-		}
-		// set octaves
-		public static function set octaves(_iOctaves:int):void {
-			iOctaves = _iOctaves;
-			octFreqPers();
-		}
-		//
-		// get falloff
-		public static function get falloff():Number {
-			return fPersistence;
-		}
-		// set falloff
-		public static function set falloff(_fPersistence:Number):void {
-			fPersistence = _fPersistence;
-			octFreqPers();
-		}
-		//
-		// get seed
-		public static function get seed():Number {
-			if (!bInit) init();
-			return iSeed;
-		}
-		// set seed
-		public static function set seed(_iSeed:Number):void {
-			if (!bInit) init();
-			iSeed = _iSeed;
-			oRand.seed = iSeed;
-			seedOffset();
-		}
-		//
-		// PRIVATE
-		private static function octFreqPers():void {
-			aOctFreq = new Array(iOctaves);
-			aOctPers = new Array(iOctaves);
-			fPersMax = 0;
-			for (var i:int;i<iOctaves;i++) {
-				var fFreq:Number = Math.pow(2,i);
-				var fPers:Number = Math.pow(fPersistence,i);
-				fPersMax += fPers;
-				aOctFreq[i] = fFreq;
-				aOctPers[i] = fPers;
+			else
+			{ // x0<y0
+				if(y0 < z0)
+					{ i1=0; j1=0; k1=1; i2=0; j2=1; k2=1; } // Z Y X order
+				else if(x0 < z0)
+					{ i1=0; j1=1; k1=0; i2=0; j2=1; k2=1; } // Y Z X order
+				else
+					{ i1=0; j1=1; k1=0; i2=1; j2=1; k2=0; } // Y X Z order
 			}
-			fPersMax = 1/fPersMax;
+
+			// A step of (1,0,0) in (i,j,k) means a step of (1-c,-c,-c) in (x,y,z),
+			// a step of (0,1,0) in (i,j,k) means a step of (-c,1-c,-c) in (x,y,z), and
+			// a step of (0,0,1) in (i,j,k) means a step of (-c,-c,1-c) in (x,y,z), where
+			// c = 1/6.
+
+			 // Offsets for second corner in (x,y,z) coords
+			var x1:Number = x0 - i1 + G3;
+			var y1:Number = y0 - j1 + G3;
+			var z1:Number = z0 - k1 + G3;
+
+			// Offsets for third corner in (x,y,z) coords
+			var x2:Number = x0 - i2 + 2.0*G3;
+			var y2:Number = y0 - j2 + 2.0*G3;
+			var z2:Number = z0 - k2 + 2.0*G3;
+
+			// Offsets for last corner in (x,y,z) coords
+			var x3:Number = x0 - 1.0 + 3.0*G3;
+			var y3:Number = y0 - 1.0 + 3.0*G3;
+			var z3:Number = z0 - 1.0 + 3.0*G3;
+
+			// Work out the hashed gradient indices of the four simplex corners
+			var ii:int = i & 255;
+			var jj:int = j & 255;
+			var kk:int = k & 255;
+			var gi0:int = perm[ii+perm[jj+perm[kk]]] % 12;
+			var gi1:int = perm[ii+i1+perm[jj+j1+perm[kk+k1]]] % 12;
+			var gi2:int = perm[ii+i2+perm[jj+j2+perm[kk+k2]]] % 12;
+			var gi3:int = perm[ii+1+perm[jj+1+perm[kk+1]]] % 12;
+			// Calculate the contribution from the four corners
+			var t0:Number = 0.6 - x0*x0 - y0*y0 - z0*z0;
+			if(t0 < 0)
+				n0 = 0.0;
+			else
+			{
+				t0 *= t0;
+				n0 = t0 * t0 * dot(grad3[gi0], x0, y0, z0);
+			}
+
+			var t1:Number = 0.6 - x1*x1 - y1*y1 - z1*z1;
+			if(t1 < 0)
+				n1 = 0.0;
+			else
+			{
+				t1 *= t1;
+				n1 = t1 * t1 * dot(grad3[gi1], x1, y1, z1);
+			}
+
+			var t2:Number = 0.6 - x2*x2 - y2*y2 - z2*z2;
+			if(t2 < 0)
+				n2 = 0.0;
+			else
+			{
+				t2 *= t2;
+				n2 = t2 * t2 * dot(grad3[gi2], x2, y2, z2);
+			}
+
+			var t3:Number = 0.6 - x3*x3 - y3*y3 - z3*z3;
+			if(t3 < 0)
+				n3 = 0.0;
+			else
+			{
+				t3 *= t3;
+				n3 = t3 * t3 * dot(grad3[gi3], x3, y3, z3);
+			}
+
+			// Add contributions from each corner to get the final noise value.
+			// The result is scaled to stay just inside [-1,1]
+			return 32.0 * (n0 + n1 + n2 + n3);
 		}
-		private static function seedOffset():void {
-			iXoffset = oRand.nextInt();
-			iYoffset = oRand.nextInt();
-			iZoffset = oRand.nextInt();
-		}
-		private static function init():void {
-			oRand = new PM_PRNG();
-			oRand.seed = iSeed;
-			seedOffset();
-			octFreqPers();
-			bInit = true;
-		}
-		private static function n(x:Number, y:Number, z:Number):Number {
-			var X:int = int(Math.floor(x))&255;
-			var Y:int = int(Math.floor(y))&255;
-			var Z:int = int(Math.floor(z))&255;
-			x -= Math.floor(x);
-			y -= Math.floor(y);
-			z -= Math.floor(z);
-			var u:Number = fade(x);
-			var v:Number = fade(y);
-			var w:Number = fade(z);
-			var A:int = p[X  ]+Y, AA:int = p[A]+Z, AB:int = p[A+1]+Z;
-			var B:int = p[X+1]+Y, BA:int = p[B]+Z, BB:int = p[B+1]+Z;
-			return lerp(w,	lerp(v,	lerp(u,	grad(p[AA  ], x  , y  , z   ),
-											grad(p[BA  ], x-1, y  , z   )),
-									lerp(u, grad(p[AB  ], x  , y-1, z   ),
-											grad(p[BB  ], x-1, y-1, z   ))),
-							lerp(v, lerp(u, grad(p[AA+1], x  , y  , z-1 ),
-											grad(p[BA+1], x-1, y  , z-1 )),
-									lerp(u, grad(p[AB+1], x  , y-1, z-1 ),
-											grad(p[BB+1], x-1, y-1, z-1 ))));
-		}
-		private static function fade(t:Number):Number {
-			return t * t * t * (t * (t * 6 - 15) + 10);
-		}
-		private static function lerp(t:Number,a:Number,b:Number):Number {
-			return a + t * (b - a);
-		}
-		private static function grad(hash:int, x:Number, y:Number, z:Number):Number {
-			var h:int = hash & 15;
-			var u:Number = h<8 ? x : y;
-			var v:Number = h<4 ? y : h==12||h==14 ? x : z;
-			return ((h&1) == 0 ? u : -u) + ((h&2) == 0 ? v : -v);
-		}
+
 	}
 }

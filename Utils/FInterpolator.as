@@ -6,6 +6,7 @@ package Framework.Utils
 
 	import Framework.Maths.FMath;
 	import Framework.Maths.FPoint;
+	import Framework.Maths.FEasing;
 
 	public class FInterpolator extends FObject
 	{
@@ -22,6 +23,7 @@ package Framework.Utils
 		// Interpolation methods used to access functions
 		public static const LINEAR:String = "linear";
 		public static const SPLINE:String = "spline";
+		public static const SINE:String = "sine";
 
 
 		/**********************
@@ -54,9 +56,10 @@ package Framework.Utils
 			funcHolder = new Array();
 			funcHolder[LINEAR] = linear;
 			funcHolder[SPLINE] = spline;
+			funcHolder[SINE] = sine;
 
 			// Set default function for interpolation
-			currentFunction = linear;
+			currentFunction = spline;
 		}
 
 		override public function Destroy():void
@@ -195,6 +198,11 @@ package Framework.Utils
 			return ret;
 		}
 
+		private function getRelativeLocation(location:Number, x1:Number, x2:Number):Number
+		{
+			return (location - x1) / (x2 - x1);
+		}
+
 
 		// Begin interpolation functions
 		private function linear(location:Number):Number
@@ -217,13 +225,23 @@ package Framework.Utils
 			var p2:FPoint = a[2];
 			var p3:FPoint = a[3];
 
-			var t:Number = (location - p1.x) / (p2.x - p1.x);
+			var t:Number = getRelativeLocation(location, p1.x, p2.x);
 
 			// Matrix math that I don't fully understand
 			return 0.5 * (( 2 * p1.y) +
 					t * (( -p0.y + p2.y) +
 					t * ((2*p0.y -5*p1.y +4*p2.y -p3.y) +
 					t * (  -p0.y +3*p1.y -3*p2.y +p3.y))))
+		}
+
+		private function sine (location:Number):Number
+		{
+			var a:Array = getNearestPoints(location);
+
+			var p0:FPoint = a[0];
+			var p1:FPoint = a[1];
+
+			return FEasing.SineInOut(getRelativeLocation(location, p0.x, p1.x), p0.y, p1.y);
 		}
 	}
 }
