@@ -4,7 +4,7 @@ package Framework.Utils
 	{
 		public function FColor()
 		{
-			trace("Don't instantiate FColor.");
+			trace("Don't instantiate FUtils.FColor.");
 		}
 
 		public static function RGBtoHEX(r:int, g:int, b:int):int
