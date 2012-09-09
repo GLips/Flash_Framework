@@ -85,7 +85,7 @@ package Framework.GUI
 			if(staged)
 			{
 				removeChild(field);
-				staged = false;
+				//staged = false;		// Unnecessary
 			}
 
 			field = new TextField();
@@ -97,6 +97,9 @@ package Framework.GUI
 			field.autoSize = textAlign;
 			field.multiline = true;
 			field.wordWrap = false;
+			
+			field.x = 0;
+			field.y = 0;
 
 			if(centered)
 				CenterText();

@@ -15,7 +15,7 @@ package Framework.GUI
 			// So we can work with the current width/height
 			if(draws)
 				Draw();
-	
+			
 			x = FG.width/2 - width/2 + offset;
 			return this;
 		}
