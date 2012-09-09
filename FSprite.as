@@ -22,6 +22,9 @@ package Framework
 		// Collision variables
 		public var collision:FShape;
 
+		// Tracking change in x & y
+		public var _x:int, _y:int;
+
 		// Get half widths for positioning
 		public function get halfHeight():Number { return height/2; }
 		public function get halfWidth():Number { return width/2; }
@@ -32,8 +35,8 @@ package Framework
 
 			super();
 			
-			x = X;
-			y = Y;
+			_x = x = X;
+			_y = y = Y;
 		}
 
 		override public function Create():void
@@ -72,8 +75,13 @@ package Framework
 
 			rotation += spin * FG.dt;
 
-			collision.x = x;
-			collision.y = y;
+			if(x != _x)
+				collision.x = x;
+			if(y != _y)
+				collision.y = y;
+
+			_x = x;
+			_y = y;
 		}
 
 		override public function Reset(X:int = 0, Y:int = 0):void

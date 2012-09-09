@@ -37,6 +37,9 @@ package Framework.GUI
 		// Default color == BLACK
 		public var textColor:Number;
 
+		// Track whether or not text has been centered (for UpdateFormat calls)
+		private var centered:Boolean;
+
 		// Tracks if text is on stage already
 		private var staged:Boolean;
 
@@ -52,6 +55,7 @@ package Framework.GUI
 			super.Create();
 
 			textAlign = FText.ALIGN_LEFT;
+			centered = false;
 		
 			UpdateFormat();
 
@@ -94,6 +98,9 @@ package Framework.GUI
 			field.multiline = true;
 			field.wordWrap = false;
 
+			if(centered)
+				CenterText();
+
 			addChild(field);
 			staged = true;
 			return this;
@@ -101,6 +108,7 @@ package Framework.GUI
 
 		public function CenterText():FText
 		{
+			centered = true;
 			field.x = -field.width/2;
 			field.y = -field.height/2;
 			return(this);

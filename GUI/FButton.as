@@ -10,7 +10,7 @@ package Framework.GUI
 	public class FButton extends FGUI
 	{
 
-		protected var label:FText;
+		public var label:FText;
 
 		public var onUp:Function;
 		public var onOver:Function;
@@ -111,6 +111,8 @@ package Framework.GUI
 		********************************/
 		override public function Update():void
 		{
+			super.Update();
+			
 			// Make sure we're in the button's hitbox
 			var isColliding:Boolean = doHitTest();
 

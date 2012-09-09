@@ -32,7 +32,7 @@ package Framework.GUI.Buttons
 			super.Create();
 
 			label.textColor = 0xFFFFFF;
-			label.textAlign = FText.ALIGN_CENTER;
+			label.CenterText();
 			label.UpdateFormat();
 			
 			label.x = Width/2;

@@ -3,6 +3,9 @@ package Framework.Utils
 	import flash.display.Sprite;
 	import flash.display.LoaderInfo;
 
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
+
 	import Framework.FG;
 
 	public class FInternet
@@ -53,7 +56,7 @@ package Framework.Utils
 
 		public static function GoToURL(url:String):void
 		{
-
+			navigateToURL(new URLRequest(url));
 		}
 	}
 }
