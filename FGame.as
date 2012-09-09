@@ -140,7 +140,8 @@ package Framework
 			_requestedScene.Update();
 			_requestedScene.Draw();
 
-			transitionFunc(scene, _requestedScene, transitionTimeLeft / transitionTime);
+			if(transitionFunc is Function)
+				transitionFunc(scene, _requestedScene, transitionTimeLeft / transitionTime);
 		}
 
 		// Pass events mouse object

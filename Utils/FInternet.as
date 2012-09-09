@@ -50,5 +50,10 @@ package Framework.Utils
 			}
 			return false;
 		}
+
+		public static function GoToURL(url:String):void
+		{
+
+		}
 	}
 }
