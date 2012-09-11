@@ -56,7 +56,7 @@ package Framework.Utils
 
 		public static function GoToURL(url:String):void
 		{
-			navigateToURL(new URLRequest(url));
+			navigateToURL(new URLRequest(url), "_top");
 		}
 	}
 }

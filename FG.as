@@ -35,6 +35,12 @@ package Framework
 		// The game object, used to get references to the stage
 		public static var _game:FGame;
 
+		// URL where the game should be played by default
+		public static var gameURL:String;
+
+		// The name of the game
+		public static var gameName:String;
+
 		// Scenes
 		public static var _scene:FScene;	// The most recently created scene
 		public static var _newScene:FScene;	// The scene to switch to

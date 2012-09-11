@@ -2,11 +2,13 @@ package Framework
 {
 	import flash.display.Sprite;
 	import flash.display.Graphics;
-	import flash.display.StageScaleMode;
 
 	import flash.events.*;
 
 	import Framework.FG;
+	import Framework.FInvalidURL;
+
+	import Framework.Utils.FInternet;
 
 	import flash.utils.getTimer;
 
@@ -22,6 +24,10 @@ package Framework
 		public var transitionFunc:Function;
 		public var transitionTime:Number;
 		public var transitionTimeLeft:Number;
+
+		protected var gameURL:String;
+
+		public var allowedURLs:Array;
 
 		public function FGame(g:FGame, w:int, h:int, s:Class):void
 		{
@@ -40,7 +46,26 @@ package Framework
 		{
 			removeEventListener(Event.ENTER_FRAME, Create);
 
-			stage.scaleMode = StageScaleMode.NO_SCALE;
+			// Check if we're on an allowed website
+			var validURL:Boolean = false;
+			if(allowedURLs != null)
+			{
+				for each(var u:String in allowedURLs)
+				{
+					if(FInternet.ValidURL(this, u, true))
+					{
+						validURL = true;
+						break;
+					}
+				}
+			}
+			else
+			{
+				validURL = true;
+			}
+
+			if(!validURL)
+				invalidURL();
 
 			switchingScene = false;
 			useMask = true;
@@ -142,6 +167,11 @@ package Framework
 
 			if(transitionFunc is Function)
 				transitionFunc(scene, _requestedScene, transitionTimeLeft / transitionTime);
+		}
+
+		protected function invalidURL():void
+		{
+			_requestedScene = new FInvalidURL();
 		}
 
 		// Pass events mouse object
