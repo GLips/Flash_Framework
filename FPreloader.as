@@ -36,6 +36,7 @@ package Framework
 
 		public var className:String;
 
+		//[Embed(source="./Media/Images/peeg.png")]
 		[Embed(source="./Media/Images/sponsors.png")]
         public var i_peeg:Class;
         public var peeg:Bitmap;

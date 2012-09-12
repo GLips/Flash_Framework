@@ -6,7 +6,10 @@ package Framework.Utils
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 
+	import flash.external.ExternalInterface;
+
 	import Framework.FG;
+	import Framework.GUI.FText;
 
 	public class FInternet
 	{
@@ -54,9 +57,16 @@ package Framework.Utils
 			return false;
 		}
 
-		public static function GoToURL(url:String):void
+		public static function GoToURL(url:String, target:String = "_blank"):void
 		{
-			navigateToURL(new URLRequest(url), "_top");
+			if(ExternalInterface.available)
+			{
+				ExternalInterface.call("window.open", url, target);
+			}
+			else
+			{
+				navigateToURL(new URLRequest(url), target);
+			}
 		}
 	}
 }
