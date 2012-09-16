@@ -12,6 +12,8 @@ package Framework
 
 	import flash.utils.getTimer;
 
+	import mochi.as3.*;
+
 	public class FGame extends Sprite
 	{
 
@@ -39,12 +41,12 @@ package Framework
 			addChild(scene);
 
 			// Once we have a reference to Flash we can do our thing
-			addEventListener(Event.ENTER_FRAME, Create);
+			addEventListener(Event.ADDED_TO_STAGE, Create);
 		}
 
 		public function Create(e:Event):void
 		{
-			removeEventListener(Event.ENTER_FRAME, Create);
+			removeEventListener(Event.ADDED_TO_STAGE, Create);
 
 			// Check if we're on an allowed website
 			var validURL:Boolean = false;
@@ -70,6 +72,12 @@ package Framework
 			switchingScene = false;
 			useMask = true;
 			InitScene();
+
+			// If we're using Mochiads let's connect to it
+			if(FG._mochiads_game_id != null)
+			{
+				MochiServices.connect(FG._mochiads_game_id, root);
+			}
 
 			// Necessary to have the proper delta time value on first scene update call
 			FG.UpdateTime();

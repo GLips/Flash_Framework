@@ -41,6 +41,9 @@ package Framework
 		// The name of the game
 		public static var gameName:String;
 
+		// If we're using Mochiads, this will hold the unique ID
+		public static var _mochiads_game_id:String;
+
 		// Scenes
 		public static var _scene:FScene;	// The most recently created scene
 		public static var _newScene:FScene;	// The scene to switch to
